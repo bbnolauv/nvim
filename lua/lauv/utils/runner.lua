@@ -2,6 +2,7 @@ function _G._my_wrapper_run_in_terminal(mytable)
     mytable.cmd = mytable.cmd or vim.fn.input("Enter command: ")
     mytable = vim.tbl_deep_extend("force", { hidden = true }, mytable)
     require("toggleterm.terminal").Terminal:new(mytable):toggle()
+    -- require("toggleterm").exec(mytable.cmd)
 end
 
 local function cmr()
@@ -15,6 +16,9 @@ local function cmr()
     local file_path = vim.fn.expand("%:p:h")
     local fileNameWithoutExt = vim.fn.expand("%:t:r")
 
+
+    local option = ""
+    -- option = "-std=c++20"
     local build_target = fileNameWithoutExt
     local run_target = ("%s/%s"):format(build_dir, build_target)
 
@@ -35,13 +39,16 @@ local function cmr()
                 cmd = cmd .. ("cmake --build %s --target %s &&"):format(build_dir, build_target)
                 cmd = cmd .. run_target
             else
-                cmd = ("g++ -o %s %s && ./%s"):format(build_target, file_name, build_target)
+                local build = "run_" .. build_target
+                cmd = ("g++ %s -o %s %s && ./%s"):format(option, build, file_name, build)
             end
         elseif file_type == "java" then
             cmd = "javac " .. file_name .. ".java"
             cmd = "java " .. file_name
         elseif file_type == "markdown" then
             vim.api.nvim_command("MarkdownPreview")
+        elseif file_type == "typst" then
+            vim.api.nvim_command("TypstWatch")
         end
     end
     if cmd == "" then
@@ -50,4 +57,9 @@ local function cmr()
     _G._my_wrapper_run_in_terminal({ cmd = cmd, close_on_exit = false })
 end
 
+local function run()
+    local cmd = 'build/main'
+    _G._my_wrapper_run_in_terminal({ cmd = cmd, close_on_exit = false })
+end
 vim.keymap.set("n", "<F5>", cmr, { silent = true })
+vim.keymap.set("n", "<F6>", run, { silent = true })

@@ -1,7 +1,6 @@
 return {
     "ellisonleao/gruvbox.nvim",
-    lazy = false,
-    priority = 1000,
+    -- lazy = true,
     config = function()
         vim.cmd([[
         set termguicolors

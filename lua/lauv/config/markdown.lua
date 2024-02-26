@@ -7,4 +7,13 @@ return {
             vim.g.mkdp_filetypes = { "markdown" }
         end,
     },
+    {
+        'ekickx/clipboard-image.nvim',
+        ft = { "markdown" },
+        config = function ()
+        end,
+    },
+    {
+        'lilydjwg/fcitx.vim'
+    }
 }

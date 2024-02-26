@@ -1,6 +1,7 @@
 return {
     "williamboman/mason-lspconfig.nvim",
-    lazy = false,
+    -- keys = { {"<cmd>Mason<cr>", desc = "Mason" } },
+    -- lazy = true,
     dependencies = {
         { "williamboman/mason.nvim", build = ":MasonUpdate" },
     },

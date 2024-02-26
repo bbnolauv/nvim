@@ -12,14 +12,14 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
-        "neovim/nvim-lspconfig",
+        -- "neovim/nvim-lspconfig",
         "hrsh7th/cmp-calc",
         "onsails/lspkind.nvim",
-        "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
         -- "SirVer/ultisnips",
         -- "quangnguyen30192/cmp-nvim-ultisnips",
     },
+    event = "InsertEnter",
     config = function()
         local cmp = require("cmp")
         local lspkind = require("lspkind")
@@ -53,11 +53,11 @@ return {
                 }),
             }),
             sources = cmp.config.sources({
+                { name = "luasnip" }, -- For luasnip users.
                 { name = "nvim_lsp" },
                 { name = "buffer" },
                 { name = "path" },
                 { name = "calc" },
-                { name = "luasnip" }, -- For luasnip users.
                 -- { name = "ultisnips" }, -- For ultisnips users.
             }),
             formatting = {
@@ -117,21 +117,22 @@ return {
         })
 
         -- Set up lspconfig.
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
         -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
         -- require("lspconfig")[].setup({
         -- 	capabilities = capabilities,
         -- })
-        local server = {
-            "pyright",
-            "clangd",
-            "cmake",
-            "lua_ls",
-        }
-        for _, lsp in pairs(server) do
-            require("lspconfig")[lsp].setup({
-                capabilities = capabilities,
-            })
-        end
+        -- local server = {
+        --     "pyright",
+        --     "clangd",
+        --     "cmake",
+        --     "lua_ls",
+        -- }
+        -- for _, lsp in pairs(server) do
+        --     local lspcfg = require("lspconfig");
+        --     lspcfg[lsp].setup({
+        --         capabilities = capabilities,
+        --     })
+        -- end
     end,
 }

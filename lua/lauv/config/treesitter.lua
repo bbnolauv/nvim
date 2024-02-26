@@ -1,6 +1,6 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
     priority = 1000,
     build = ":TSUpdate",
     config = function()

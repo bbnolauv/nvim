@@ -31,16 +31,20 @@ require("lazy").setup({
     require("lauv.config.treesitter"), -- syntax highlight
     require("lauv.config.telescope"),  -- fuzzy search
     require("lauv.config.mason"),      -- lsp server manager
+    require("lauv.config.complete"),
     require("lauv.config.lspconfig"),
     require("lauv.config.comment"),
     require("lauv.config.format"),
-    require("lauv.config.complete"),
-    require("lauv.config.term"),
+    require("lauv.config.terminal"),
     require("lauv.config.colorpreview"),
     require("lauv.config.surround"),
     require("lauv.config.markdown"),
+    -- require("lauv.config.typst"),
+    -- require("lauv.config.filetype"),
     require("lauv.config.copilot"),
-    require("lauv.config.undotree"),
+    -- require("lauv.config.undotree"),
+    require("lauv.config.snippets"),
+    require("lauv.config.autopairs"),
 })
 
 require("lauv.utils.runner")

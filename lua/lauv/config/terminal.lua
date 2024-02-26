@@ -1,5 +1,6 @@
 return {
     "akinsho/toggleterm.nvim",
+    keys = '<F8>',
     version = "*",
     config = function()
         require("toggleterm").setup({
