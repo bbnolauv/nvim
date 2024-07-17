@@ -1,15 +1,18 @@
 return {
-    "ellisonleao/gruvbox.nvim",
-    -- lazy = true,
-    config = function()
-        vim.cmd([[
-        set termguicolors
-        colorscheme gruvbox
-        "set guicursor=
-        hi LineNrAbove guifg=#cc6666 ctermfg=red
-        hi LineNrBelow guifg=#66cc66 ctermfg=green
-        hi SignColumn guibg=none
-        hi Normal guifg=#ebdbb2 guibg=none
-        ]])
-    end,
+  "ellisonleao/gruvbox.nvim",
+  priority = 1000,
+  opts = {
+    termguicolors = true,
+    guicursor = "n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20",
+    overrides = {
+      -- For relative number
+      -- LineNrAbove = { fg = "#cc6666", ctermfg = "red" },
+      -- LineNrBelow = { fg = "#66cc66", ctermfg = "green" },
+      SignColumn = { bg = "none" },
+      Normal = { fg = "#ebdbb2", bg = "none" },
+    },
+  },
+  init = function()
+    vim.cmd.colorscheme("gruvbox")
+  end,
 }
