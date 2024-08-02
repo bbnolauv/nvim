@@ -1,28 +1,32 @@
 return {
-    "williamboman/mason-lspconfig.nvim",
-    -- keys = { {"<cmd>Mason<cr>", desc = "Mason" } },
-    -- lazy = true,
-    dependencies = {
-        { "williamboman/mason.nvim", build = ":MasonUpdate" },
+  {
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    build = ":MasonUpdate",
+    opts = {
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
+        },
+      },
     },
-    config = function()
-        require("mason").setup({
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗",
-                },
-            },
-        })
-        require("mason-lspconfig").setup({
-            ensure_installed = {
-                "lua_ls",
-                "clangd",
-                "pyright",
-                "cmake",
-            },
-            automatic_installation = true,
-        })
-    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+    },
+    opts = {
+      ensure_installed = {
+        "lua_ls",
+        "pyright",
+        "cmake",
+        -- "clangd",
+      },
+      automatic_installation = true,
+    },
+  },
 }
