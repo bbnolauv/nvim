@@ -1,3 +1,3 @@
-require("lauv.options")
-require("lauv.plugins")
-require("lauv.mappings")
+require("lauv.config.options")
+require("lauv.config.mappings")
+require("lauv.config.plugins")

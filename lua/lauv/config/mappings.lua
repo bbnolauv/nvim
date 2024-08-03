@@ -1,28 +1,29 @@
 -- use space as a the leader key
-vim.g.mapleader = ' '
---vim.g.mapleader = "\<space>"
+vim.g.mapleader = " "
 
 -- Functional wrapper for mapping custom keybindings
 local function map(mode, lhs, rhs, opts)
-    if type(mode) == "table" then
-        for i = 1, #mode do
-            map(mode[i], lhs, rhs, opts)
-        end
-        return
-    end
-    local options = { noremap = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  local options = { noremap = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- map("i", "kj", "<Esc>", { silent = true })
 map("n", "Z", "ZZ", { silent = true })
-map({ "v", "n" }, "gh", "(v:count == 0 || v:count == 1 ? '^^' : '^^' . (v:count - 1) . 'l')",
-    { silent = true, expr = true })
-map({ "v", "n" }, "gl", "(v:count == 0 || v:count == 1 ? '^$' : '^$' . (v:count - 1) . 'h')",
-    { silent = true, expr = true })
+map(
+  { "v", "n" },
+  "gh",
+  "(v:count == 0 || v:count == 1 ? '^^' : '^^' . (v:count - 1) . 'l')",
+  { silent = true, expr = true }
+)
+map(
+  { "v", "n" },
+  "gl",
+  "(v:count == 0 || v:count == 1 ? '^$' : '^$' . (v:count - 1) . 'h')",
+  { silent = true, expr = true }
+)
 map({ "v", "n", "i" }, "<F4>", "<cmd>wa<CR>")
 --map('n', "<F1>", "<cmd>wa<CR><cmd>b#<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F1>", "<ESC><cmd>wa<CR><cmd>b#<CR>", { silent = true })
@@ -52,26 +53,25 @@ map("n", "<leader>k", "<cmd>Telescope live_grep initial_mode=insert<CR>")
 -- 查找所有已打开文件
 map("n", "<leader>l", "<cmd>Telescope buffers<CR>")
 -- 查找文件内函数名
-map("n", "<leader>f", "<cmd>Telescope lsp_document_symbols<CR>")
-
--- -- Neoformat
--- map("n", "<leader>q", "<cmd>Neoformat<CR>", { silent = true })
+map("n", "<leader>f", '<cmd>Telescope lsp_document_symbols symbols="function"<CR>')
 
 -- Trouble
-map("n", "<leader>t", "<cmd>TroubleToggle<CR>", { silent = true })
+map("n", "<leader>t", "<cmd>Trouble diagnostics toggle focus=true<cr>", { silent = true })
+
+-- Term
+map("n", "<F8>", "<cmd>ToggleTerm<CR>", { silent = true })
 
 -- Color Preview
-map("n", "<leader>cl", '<cmd>HexokinaseToggle<CR>')
+map("n", "<leader>cl", "<cmd>HexokinaseToggle<CR>")
 
 -- Copilot
-map('n', '<leader>go', ':Copilot<CR>', { silent = true })
-map('n', '<leader>ge', ':Copilot enable<CR>', { silent = true })
-map('n', '<leader>gd', ':Copilot disable<CR>', { silent = true })
+map("n", "<leader>go", ":Copilot<CR>", { silent = true })
+map("n", "<leader>ge", ":Copilot enable<CR>", { silent = true })
+map("n", "<leader>gd", ":Copilot disable<CR>", { silent = true })
 vim.cmd('imap <silent><script><expr> <C-C> copilot#Accept("")')
 
--- Undotree
+-- Undotree (doesnt work)
 -- map('n', '<F7>', '<cmd>UndotreeToggle<CR>', { silent = true })
 
--- ImagePaste
--- map({ "n", "i", "v" }, "<leader>v", "<ESC><cmd>wa<CR><cmd>b#<CR>", { silent = true })
-map({ "n", "i", "v" }, "<leader>vv", "<cmd>PasteImg<cr>", { silent = true })
+-- ImagePaste (Unavilable)
+-- map({ "n", "i", "v" }, "<leader>vv", "<cmd>PasteImg<cr>", { silent = true })
