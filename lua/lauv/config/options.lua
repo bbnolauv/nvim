@@ -17,7 +17,7 @@ local option_table = {
   shiftwidth = 2,
   showbreak = "↪",
   showmode = false,
-  signcolumn = "yes",
+  signcolumn = "no",
   softtabstop = 0,
   switchbuf = "useopen",
   tabstop = 2,
@@ -27,7 +27,26 @@ for k, v in pairs(option_table) do
   vim.opt[k] = v
 end
 
-vim.opt.clipboard:append("unnamedplus")
+-- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
+if (os.getenv('SSH_TTY') == nil)
+then
+  --Current env is local, include WSL
+  vim.opt.clipboard:append("unnamedplus")
+else
+  -- Issue of windows terminal, check link below:
+  -- https://github.com/microsoft/terminal/issues/17735
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+  }
+end
 
 if vim.fn.has("nvim-0.10") == 1 then
   vim.opt.smoothscroll = true
