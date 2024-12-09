@@ -37,7 +37,7 @@ local function build_and_run()
   local build_dir = "build"
   local build_gen = "Ninja"
   local cmk = "CMakeLists.txt"
-
+  local platform = vim.loop.os_uname().sysname
   local file_name = vim.fn.expand("%:t")
   local file_type = vim.bo.filetype
   local file_path = vim.fn.expand("%:p:h")
@@ -67,7 +67,13 @@ local function build_and_run()
         cmd = cmd .. run_target
       else
         local run_target = "run_" .. build_target
-        cmd = ("g++ %s -o /tmp/%s %s && /tmp/%s"):format(option, run_target, file_name, run_target)
+        if platform == "Windows_NT" then
+          local tmp = os.getenv("TMP")
+          run_target = tmp .. "\\" .. run_target
+          cmd = ("g++ %s -o %s %s && %s"):format(option, run_target, file_name, run_target)
+        elseif platform == "Linux" then
+          cmd = ("g++ %s -o /tmp/%s %s && /tmp/%s"):format(option, run_target, file_name, run_target)
+        end
       end
     elseif file_type == "markdown" then
       vim.api.nvim_command("MarkdownPreview")
