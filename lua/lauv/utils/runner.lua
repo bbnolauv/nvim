@@ -41,6 +41,7 @@ local function build_and_run()
   local file_name = vim.fn.expand("%:t")
   local file_type = vim.bo.filetype
   local file_path = vim.fn.expand("%:p:h")
+  local file_name_with_abs_path = vim.fn.expand("%:p")
   local fileNameWithoutExt = vim.fn.expand("%:t:r")
 
   local option = ""
@@ -70,9 +71,9 @@ local function build_and_run()
         if platform == "Windows_NT" then
           local tmp = os.getenv("TMP")
           run_target = tmp .. "\\" .. run_target
-          cmd = ("g++ %s -o %s %s && %s"):format(option, run_target, file_name, run_target)
+          cmd = ("g++ %s -o /tmp/%s '%s' && /tmp/%s"):format(option, run_target, file_name_with_abs_path, run_target)
         elseif platform == "Linux" then
-          cmd = ("g++ %s -o /tmp/%s %s && /tmp/%s"):format(option, run_target, file_name, run_target)
+          cmd = ("g++ %s -o /tmp/%s '%s' && /tmp/%s"):format(option, run_target, file_name_with_abs_path, run_target)
         end
       end
     elseif file_type == "markdown" then
