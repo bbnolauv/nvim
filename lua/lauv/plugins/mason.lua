@@ -21,9 +21,9 @@ return {
     },
     opts = {
       ensure_installed = {
-        "lua_ls",
-        "pyright",
-        "cmake",
+        -- "lua_ls",
+        -- "pyright",
+        -- "cmake",
         -- "clangd",
       },
       automatic_installation = true,

@@ -6,9 +6,9 @@ return {
       local capabilities = {}
       local server = {
         "clangd",
-        "cmake",
-        "lua_ls",
-        "pyright",
+        -- "cmake",
+        -- "lua_ls",
+        -- "pyright",
       }
       local lspcfg = require("lspconfig")
       for _, lsp in pairs(server) do
