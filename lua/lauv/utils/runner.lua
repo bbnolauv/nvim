@@ -53,7 +53,7 @@ local function build_and_run()
   if file_name and file_type then
     if file_type == "python" then
       cmd = ("python %s"):format(file_name)
-    elseif file_type == "c" or file_type == "cpp" then
+    elseif file_type == "c" or file_type == "cpp" or file_type == "cmake" then
       if os.execute("test -e " .. cmk) == 0 then
         build_target = match()
         local run_target = ("%s/%s"):format(build_dir, build_target)
