@@ -53,7 +53,7 @@ map("n", "<leader>k", "<cmd>Telescope live_grep initial_mode=insert<CR>")
 -- 查找所有已打开文件
 map("n", "<leader>l", "<cmd>Telescope buffers<CR>")
 -- 查找文件内函数名
-map("n", "<leader>f", '<cmd>Telescope lsp_document_symbols symbols="function"<CR>')
+map("n", "<leader>f", '<cmd>Telescope lsp_document_symbols symbols={"function","method"}<CR>')
 
 -- Trouble
 map("n", "<leader>t", "<cmd>Trouble diagnostics toggle focus=true<cr>", { silent = true })
