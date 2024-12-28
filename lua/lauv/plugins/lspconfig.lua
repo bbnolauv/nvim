@@ -1,7 +1,8 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
+    ft = { "c", "cpp", "python", "lua" },
     config = function()
       local capabilities = {}
       local server = {
