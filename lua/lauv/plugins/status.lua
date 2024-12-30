@@ -6,8 +6,8 @@ return {
     -- Color table for highlights
     -- stylua: ignore start
     local colors = {
-      -- bg       = '#000000',
-      bg       = '#282828',
+      bg       = 'None',
+      -- bg       = '#282828',
       bglight  = '#504945',
       bgdark   = '#3f3d3f',
       fg       = '#bbc2cf',
@@ -111,57 +111,47 @@ return {
 
     ins_left({
       function()
-        return "█"
+        return " "
       end,
       padding = { right = 0 },
-      color = function()
-        return { fg = colors.bg, gui = "bold" }
-      end,
     })
 
     ins_left({
       "mode",
       icon = "",
+      -- You should use a function here to make it change color according to mode
       color = function()
-        return { bg = mode_color[vim.fn.mode()], fg = colors.bg, gui = "bold" }
+        return { bg = mode_color[vim.fn.mode()], fg = colors.black, gui = "bold" }
       end,
       separator = { left = "", right = "" },
       padding = { left = 1, right = 1 },
     })
 
-    -- ins_left({
-    --   "filename",
-    --   color = { bg = colors.bg, fg = colors.blue, gui = "bold" },
-    -- })
-
     ins_left({
       "branch",
       icon = "",
+      -- color = { fg = colors.violet, bg = colors.bg, gui = "bold" },
       color = { fg = colors.violet, bg = colors.bg, gui = "bold" },
+      cond = conditions.hide_in_width,
     })
 
     ins_left({
-      "diff",
-      symbols = { added = " ", modified = " ", removed = " " },
-      diff_color = {
-        added = { fg = colors.green },
-        modified = { fg = colors.orange },
-        removed = { fg = colors.red },
-      },
-      color = { bg = colors.bg },
-      cond = conditions.hide_in_width,
+      "filename",
+      icon = "",
+      color = { bg = colors.bg, gui = "bold" },
     })
 
     ins_left({
       function()
         return "%="
       end,
+      cond = conditions.hide_in_width,
     })
 
     ins_left({
-      -- Lsp server name .
+      -- LSP server name .
       function()
-        local msg = "No Active Lsp"
+        local msg = "No Active LSP"
         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
@@ -175,8 +165,10 @@ return {
         end
         return msg
       end,
-      icon = "  LSP:",
+      icon = "󰨞 ",
+      -- icon = "  LSP:",
       color = { fg = colors.blue, gui = "bold" },
+      cond = conditions.hide_in_width,
     })
 
     -- Add components to right sections
@@ -196,17 +188,15 @@ return {
     -- })
 
     ins_right({
-      "filetype",
-      cond = conditions.buffer_not_empty,
-      color = { fg = colors.magenta, bg = colors.bg, gui = "bold" },
-    })
-
-    ins_right({
-      function()
-        return "╱"
-      end,
-      padding = { left = 0, right = 0 },
-      color = { bg = colors.bg, fg = colors.bglight, gui = "bold" },
+      "diff",
+      symbols = { added = " ", modified = " ", removed = " " },
+      diff_color = {
+        added = { fg = colors.green },
+        modified = { fg = colors.orange },
+        removed = { fg = colors.red },
+      },
+      color = { bg = colors.bg },
+      cond = conditions.hide_in_width,
     })
 
     ins_right({
@@ -214,20 +204,35 @@ return {
       fmt = string.upper,
       icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
       color = { fg = colors.blue, bg = colors.bg, gui = "bold" },
+      cond = conditions.hide_in_width,
     })
 
     ins_right({
-      function()
-        return "╱"
-      end,
-      padding = { left = 0, right = 0 },
-      color = { bg = colors.bg, fg = colors.bglight, gui = "bold" },
+      "encoding",
+      cond = conditions.buffer_not_empty,
+      color = { fg = colors.magenta, bg = colors.bg, gui = "bold" },
     })
+
+    ins_right({
+      "filetype",
+      cond = conditions.buffer_not_empty,
+      color = { fg = colors.magenta, bg = colors.bg, gui = "bold" },
+    })
+
+    -- ins_right({
+    --   function()
+    --     return ""
+    --   end,
+    --   padding = { left = 0, right = 0 },
+    --   color = { bg = colors.bg, fg = colors.bglight, gui = "bold" },
+    --   cond = conditions.hide_in_width,
+    -- })
 
     ins_right({
       "progress",
       -- icon = { "", align = "right" },
       color = { fg = colors.blue, bg = colors.bg, gui = "bold" },
+      cond = conditions.hide_in_width,
     })
 
     ins_right({
