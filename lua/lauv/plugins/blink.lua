@@ -16,9 +16,14 @@ return {
   opts = {
     completion = {
       list = {
-        selection = function(ctx)
-          return ctx.mode == "cmdline" and "auto_insert" or "preselect"
-        end,
+        selection = {
+          preselect = function(ctx)
+            return ctx.mode ~= "cmdline"
+          end,
+          auto_insert = function(ctx)
+            return ctx.mode == "cmdline"
+          end,
+        },
       },
     },
     -- 'default' for mappings similar to built-in completion
