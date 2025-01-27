@@ -25,7 +25,6 @@ map(
   { silent = true, expr = true }
 )
 map({ "v", "n", "i" }, "<F4>", "<cmd>wa<CR>")
---map('n', "<F1>", "<cmd>wa<CR><cmd>b#<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F1>", "<ESC><cmd>wa<CR><cmd>b#<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F2>", "<ESC><cmd>wa<CR><cmd>bp<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F3>", "<ESC><cmd>wa<CR><cmd>bn<CR>", { silent = true })
@@ -40,20 +39,22 @@ map({ "v", "n", "t" }, "<C-j>", [[<C-w>j]])
 map({ "v", "n", "t" }, "<C-k>", [[<C-w>k]])
 map({ "v", "n", "t" }, "<C-l>", [[<C-w>l]])
 
--- Telescope
-map("n", "<leader>u", "<cmd>wa<CR><cmd>Telescope find_files initial_mode=insert<CR>")
--- 查找 git 仓库中的文件
-map("n", "<leader>i", "<cmd>Telescope git_files initial_mode=insert<CR>")
--- 查找最近打开过的文件
-map("n", "<leader>o", "<cmd>wa<CR><cmd>Telescope oldfiles<CR>")
--- 查找 git status 中的文件
-map("n", "<leader>p", "<cmd>Telescope git_status<CR>")
--- 查找当前项目文件中的文字
-map("n", "<leader>k", "<cmd>Telescope live_grep initial_mode=insert<CR>")
--- 查找所有已打开文件
-map("n", "<leader>l", "<cmd>Telescope buffers<CR>")
--- 查找文件内函数名
-map("n", "<leader>f", '<cmd>Telescope lsp_document_symbols symbols={"function","method"}<CR>')
+-- fzf-lua
+map("n", "<leader>u", "<cmd>FzfLua files<cr>")
+map("n", "<leader>o", "<cmd>FzfLua oldfiles<cr>")
+map("n", "<leader>i", "<cmd>FzfLua git_files<cr>")
+map("n", "<leader>p", "<cmd>FzfLua git_status<cr>")
+map("n", "<leader>k", "<cmd>FzfLua live_grep<cr>")
+map("n", "<leader>l", "<cmd>FzfLua buffers<cr>")
+map("n", "<leader>m", "<cmd>FzfLua marks<CR>")
+map("n", "<leader>f", function()
+  require("fzf-lua").lsp_document_symbols({
+    regex_filter = function(item, _)
+      local kind = item.kind
+      return kind == "Struct" or kind == "Enum" or kind == "Method" or kind == "Function"
+    end,
+  })
+end)
 
 -- Trouble
 map("n", "<leader>t", "<cmd>Trouble diagnostics toggle focus=true<cr>", { silent = true })

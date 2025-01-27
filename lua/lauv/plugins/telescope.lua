@@ -1,5 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
+  cond = false,
   tag = "0.1.8",
   -- or                              , branch = '0.1.x',
   cmd = "Telescope",
