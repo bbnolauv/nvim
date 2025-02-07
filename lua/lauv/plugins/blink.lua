@@ -3,7 +3,7 @@ return {
   -- optional: provides snippets for the snippet source
   -- cond = false,
   dependencies = "rafamadriz/friendly-snippets",
-  event = "InsertEnter",
+  event = { "InsertEnter", "CmdlineEnter" },
   -- use a release tag to download pre-built binaries
   version = "*",
   -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
@@ -20,9 +20,8 @@ return {
           preselect = function(ctx)
             return ctx.mode ~= "cmdline"
           end,
-          auto_insert = function(ctx)
-            return ctx.mode == "cmdline"
-          end,
+
+          -- auto_insert = true,
         },
       },
     },
@@ -34,6 +33,23 @@ return {
       preset = "enter",
       ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
       ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+      cmdline = {
+        preset = "enter",
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<Up>"] = {},
+        ["<Down>"] = {},
+        ["<CR>"] = {
+          function(cmp)
+            return cmp.accept({
+              callback = function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, true, true), "n", true)
+              end,
+            })
+          end,
+          "fallback",
+        },
+      },
     },
 
     appearance = {
@@ -50,6 +66,13 @@ return {
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
+      min_keyword_length = function(ctx)
+        -- only applies when typing a command, doesn't apply to arguments
+        if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
+          return 2
+        end
+        return 0
+      end,
     },
   },
   opts_extend = { "sources.default" },
