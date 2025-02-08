@@ -36,13 +36,13 @@ local function build_and_run()
   vim.api.nvim_command("write")
   local build_dir = "build"
   local build_gen = "Ninja"
-  local cmk = "CMakeLists.txt"
   local platform = vim.loop.os_uname().sysname
   local file_name = vim.fn.expand("%:t")
   local file_type = vim.bo.filetype
   local file_path = vim.fn.expand("%:p:h")
   local file_name_with_abs_path = vim.fn.expand("%:p")
   local fileNameWithoutExt = vim.fn.expand("%:t:r")
+  -- build_dir = file_path .. "/" .. build_dir
 
   local option = ""
   -- option = "-std=c++20"
@@ -54,10 +54,10 @@ local function build_and_run()
     if file_type == "python" then
       cmd = ("python %s"):format(file_name)
     elseif file_type == "c" or file_type == "cpp" or file_type == "cmake" then
-      if os.execute("test -e " .. cmk) == 0 then
+      if vim.fn.filereadable("CMakeLists.txt") == 1 then
         build_target = match()
         local run_target = ("%s/%s"):format(build_dir, build_target)
-        if os.execute("test -d " .. build_dir) ~= 0 then
+        if vim.fn.isdirectory(build_dir) == 0 then
           cmd = ("cmake -S %s -B %s -G %s -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON &&"):format(
             file_path,
             build_dir,
@@ -100,5 +100,6 @@ local function run()
   cmd = cmd .. build_target
   _G._my_wrapper_run_in_terminal({ cmd = cmd, close_on_exit = false })
 end
+
 vim.keymap.set("n", "<F5>", build_and_run, { silent = true })
-vim.keymap.set("n", "<F6>", run, { silent = true })
+-- vim.keymap.set("n", "<F6>", run, { silent = true })
