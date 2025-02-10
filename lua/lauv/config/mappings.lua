@@ -67,9 +67,6 @@ map("n", "<leader>cl", "<cmd>HexokinaseToggle<CR>")
 
 -- Copilot
 map("n", "<leader>go", ":Copilot<CR>", { silent = true })
-map("n", "<leader>ge", ":Copilot enable<CR>", { silent = true })
-map("n", "<leader>gd", ":Copilot disable<CR>", { silent = true })
-vim.cmd('imap <silent><script><expr> <C-C> copilot#Accept("")')
 
 -- Undotree (doesnt work)
 -- map('n', '<F7>', '<cmd>UndotreeToggle<CR>', { silent = true })
