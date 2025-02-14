@@ -29,6 +29,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
+    { import = "lauv.plugins.lib" },
     { import = "lauv.plugins" },
   },
   change_detection = {

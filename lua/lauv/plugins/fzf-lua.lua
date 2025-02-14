@@ -3,7 +3,7 @@ return {
   -- optional for icon support
   -- cond = false,
   cmd = "FzfLua",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  -- dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
     -- fzf_colors = true,
   },

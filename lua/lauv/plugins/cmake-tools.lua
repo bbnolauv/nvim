@@ -1,7 +1,7 @@
 return {
   "Civitasv/cmake-tools.nvim",
   lazy = true,
-  dependencies = { "nvim-lua/plenary.nvim" },
+  -- dependencies = { "nvim-lua/plenary.nvim" },
   init = function()
     local loaded = false
     local function check()
