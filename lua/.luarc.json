@@ -1,24 +1,14 @@
 {
-    "runtime.version": "LuaJIT",
-    "diagnostics": {
-        "enable": true,
-        "globals": [
-          "vim",
-          "describe",
-          "pending",
-          "it",
-          "before_each",
-          "after_each",
-          "setup",
-          "teardown",
-          "finally",
-          "lfs"
-        ]
-    },
-    "workspace": {
-        "checkThirdParty": false,
-        "maxPreload": 2000,
-        "preloadFileSize": 1000
-    },
-    "telemetry.enable": false
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "ignoreDir": [
+      "lua/snippets"
+    ]
+  },
+  "diagnostics.disable": [
+    "missing-fields"
+  ]
 }
