@@ -15,7 +15,7 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    ft = { "lua" },
     dependencies = {
       "williamboman/mason.nvim",
     },
