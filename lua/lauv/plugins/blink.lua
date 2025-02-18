@@ -33,7 +33,9 @@ return {
       preset = "enter",
       ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
       ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-      cmdline = {
+    },
+    cmdline = {
+      keymap = {
         preset = "enter",
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
@@ -51,7 +53,6 @@ return {
         },
       },
     },
-
     appearance = {
       -- Sets the fallback highlight groups to nvim-cmp's highlight groups
       -- Useful for when your theme doesn't support blink.cmp
