@@ -4,7 +4,19 @@ return {
   build = ":TSUpdate",
   main = "nvim-treesitter.configs",
   opts = {
-    ensure_installed = { "c", "cpp", "python", "cmake", "lua", "vim", "vimdoc", "bash", "markdown", "json" }, -- INFO: add your language here
+    ensure_installed = {
+      "bash",
+      "c",
+      "cmake",
+      "cpp",
+      "json",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "vim",
+      "vimdoc",
+    }, -- INFO: add your language here
     highlight = {
       enable = true,
       disable = {}, -- list of language that will be disabled
