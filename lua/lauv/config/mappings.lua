@@ -63,7 +63,7 @@ map("n", "<leader>t", "<cmd>Trouble diagnostics toggle focus=true<cr>", { silent
 map("n", "<F8>", "<cmd>ToggleTerm<CR>", { silent = true })
 
 -- Color Preview
-map("n", "<leader>cl", "<cmd>HexokinaseToggle<CR>")
+map("n", "<leader>cl", "<cmd>ColorizerToggle<CR>")
 
 -- Copilot
 map("n", "<leader>go", ":Copilot<CR>", { silent = true })
