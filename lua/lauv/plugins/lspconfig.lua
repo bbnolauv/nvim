@@ -102,6 +102,9 @@ return {
           -- See `:help vim.lsp.*` for documentation on any of the below functions
           local opts = { buffer = ev.buf }
 
+          vim.keymap.set("n", "K", function()
+            vim.lsp.buf.hover({ border = "rounded" })
+          end, opts)
           vim.keymap.set("n", "<space>ca", "<cmd>Lspsaga code_action<cr>", opts)
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gR", "<cmd>Lspsaga rename<cr>", opts)

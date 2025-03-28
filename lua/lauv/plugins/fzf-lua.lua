@@ -5,6 +5,9 @@ return {
   cmd = "FzfLua",
   -- dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
-    -- fzf_colors = true,
+    fzf_colors = {
+      true,
+      ["gutter"] = "-1",
+    },
   },
 }
