@@ -1,6 +1,7 @@
 return {
   {
     "iamcco/markdown-preview.nvim",
+    cond = false,
     ft = { "markdown" },
     build = "cd app && yarn install",
     config = function()
