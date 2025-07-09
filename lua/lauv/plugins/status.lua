@@ -1,6 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
-  event = "BufEnter */*",
+  event = "VeryLazy",
   config = function()
 
     -- Color table for highlights
