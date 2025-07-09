@@ -32,6 +32,7 @@ return {
     -- vim.api.nvim_set_hl(0, "VirtualTextError", { link = "DiagnosticError" })
 
     vim.api.nvim_set_hl(0, "BlinkCmpSource", { link = "NormalFloat" })
+    vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "Comment" })
     vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "TabLine", { bg = "NONE" })
   end,
