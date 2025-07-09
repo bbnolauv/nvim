@@ -29,7 +29,7 @@ return {
       name = "quickfix",
       opts = {
         position = "botright",
-        show = "only_on_error",
+        show = "always",
       },
     },
     cmake_runner = {
@@ -47,6 +47,6 @@ return {
       spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }, -- icons used for progress display
       refresh_rate_ms = 100, -- how often to iterate icons
     },
-    cmake_virtual_text_support = true, -- Show the target related to current file using virtual text (at right corner)
+    cmake_virtual_text_support = false, -- Show the target related to current file using virtual text (at right corner)
   },
 }
