@@ -21,6 +21,18 @@ local option_table = {
   softtabstop = 0,
   switchbuf = "useopen",
   tabstop = 2,
+  winborder = "rounded",
+  conceallevel = 2,
+  -- undofile = true,
+
+  -- Nice and simple folding:
+  foldenable = true,
+  foldlevel = 99,
+  foldmethod = "expr",
+  foldexpr = "v:lua.vim.treesitter.foldexpr()",
+  -- foldtext = "",
+  -- foldcolumn = "0",
+  -- vim.opt.fillchars:append({ fold = " " }),
 }
 
 for k, v in pairs(option_table) do
