@@ -40,22 +40,21 @@ for k, v in pairs(option_table) do
 end
 
 -- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
-if (os.getenv('SSH_TTY') == nil)
-then
+if os.getenv("SSH_TTY") == nil then
   --Current env is local, include WSL
   vim.opt.clipboard:append("unnamedplus")
 else
   -- Issue of windows terminal, check link below:
   -- https://github.com/microsoft/terminal/issues/17735
   vim.g.clipboard = {
-    name = 'OSC 52',
+    name = "OSC 52",
     copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
     },
     paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
     },
   }
 end
