@@ -71,7 +71,7 @@ local function build_and_run()
         if platform == "Windows_NT" then
           local tmp = os.getenv("TMP")
           run_target = tmp .. "\\" .. run_target
-          cmd = ("g++ %s -o /tmp/%s '%s' && /tmp/%s"):format(option, run_target, file_name_with_abs_path, run_target)
+          cmd = ("g++ %s -o %s %s && %s"):format(option, run_target, file_name_with_abs_path, run_target)
         elseif platform == "Linux" then
           cmd = ("g++ %s -o /tmp/%s '%s' && /tmp/%s"):format(option, run_target, file_name_with_abs_path, run_target)
         end
