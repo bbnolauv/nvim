@@ -15,17 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- To-Do:
--- lsp-zero
--- notify           >       notification
-
--- Done:
--- treesitter       >       syntax          *
--- telescope        >       fuzzy search    *
--- nvim-comment     >       comment         *
--- lsp
--- format
--- surround
--- undotree
+-- lspconfig lspsaga snack.picker
 
 require("lazy").setup({
   spec = {
