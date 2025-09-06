@@ -29,7 +29,6 @@ map({ "n", "i", "v" }, "<F1>", "<ESC><cmd>wa<CR><cmd>b#<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F2>", "<ESC><cmd>wa<CR><cmd>bp<CR>", { silent = true })
 map({ "n", "i", "v" }, "<F3>", "<ESC><cmd>wa<CR><cmd>bn<CR>", { silent = true })
 map({ "n" }, "<Esc>", [[<Cmd>nohls<CR><Esc>]], { noremap = true })
-map({ "n" }, "<leader><F1>", "<Cmd>vsplit ~/.config/nvim/lua/lauv/init.lua<CR>", { noremap = true })
 
 map({ "i" }, "<c-l>", [[<Right>]])
 
