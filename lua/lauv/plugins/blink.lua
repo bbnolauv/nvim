@@ -15,7 +15,7 @@ return {
   ---@type blink.cmp.Config
   opts = {
     keymap = {
-      preset = "super-tab"
+      preset = "enter",
     },
     appearance = {
       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
