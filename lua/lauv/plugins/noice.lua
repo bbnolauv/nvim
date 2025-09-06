@@ -3,8 +3,9 @@ return {
   event = "VeryLazy",
   -- dependencies = { "MunifTanjim/nui.nvim" },
   opts = {
-    lsp = {
-      hover = { enabled = false },
+    presets = {
+      long_message_to_split = true, -- long messages will be sent to a split
+      lsp_doc_border = true, -- add a border to hover docs and signature help
     },
   },
 }
