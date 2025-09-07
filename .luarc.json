@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "library": [
+      "lua",
+      "$VIMRUNTIME",
+      "${3rd}/luv/library",
+      "$HOME/.local/share/nvim/lazy/lazy.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/blink.cmp/lua",
+      "$HOME/.local/share/nvim/lazy/oil.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/flash.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/snacks.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/plenary.nvim/lua/plenary"
+    ],
+    "checkThirdParty": false
+  }
+}
