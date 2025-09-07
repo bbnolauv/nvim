@@ -1,6 +1,14 @@
 -- use space as a the leader key
 vim.g.mapleader = " "
 
+if vim.fn.has("nvim-0.11") == 1 then
+  vim.keymap.del("n", "gri")
+  vim.keymap.del("n", "gra")
+  vim.keymap.del("n", "grn")
+  vim.keymap.del("n", "grr")
+  vim.keymap.del("n", "grt")
+end
+
 -- Functional wrapper for mapping custom keybindings
 local function map(mode, lhs, rhs, opts)
   local options = { noremap = true }
