@@ -1,105 +1,133 @@
-function _G._my_wrapper_run_in_terminal(mytable)
-  mytable.cmd = mytable.cmd or vim.fn.input("Enter command: ")
-  mytable = vim.tbl_deep_extend("force", { hidden = true }, mytable)
-  require("toggleterm.terminal").Terminal:new(mytable):toggle()
-  -- require("toggleterm").exec(mytable.cmd)
-end
+-- -----------------------------------------------------------
+-- Module definition and configuration
+-- -----------------------------------------------------------
+local M = {}
 
-local function match()
-  -- Simulating reading content from a file
-  local CMAKELISTS_CONTENT = io.open("CMakeLists.txt", "r"):read("*a")
+M.config = {
+  build_dir = "build",
+  build_gen = "Ninja",
+  default_build_options = "-std=c++20",
+  tmp_dir = vim.uv.os_uname().sysname == "Windows_NT" and os.getenv("TMP") or "/tmp",
+}
 
-  -- Simulating string regex match
-  local TARGET_NAME = string.match(CMAKELISTS_CONTENT, "add_executable%(([^%s]+)")
+-- -----------------------------------------------------------
+-- Helper functions
+-- -----------------------------------------------------------
 
-  return TARGET_NAME
-end
-
--- [FOR DEBUG]
--- Get back the output of os.execute in Lua
-function os.capture(cmd, raw)
-  local handle = assert(io.popen(cmd, "r"))
-  local output = assert(handle:read("*a"))
-
-  handle:close()
-
-  if raw then
-    return output
+--- Match project name from CMakeLists.txt
+local function get_target_name()
+  local cmakelists_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h") .. "/CMakeLists.txt"
+  if vim.fn.filereadable(cmakelists_path) == 0 then
+    return nil
   end
-
-  output = string.gsub(string.gsub(string.gsub(output, "^%s+", ""), "%s+$", ""), "[\n\r]+", " ")
-
-  return output
+  local content = table.concat(vim.fn.readfile(cmakelists_path), "\n")
+  local target = string.match(content, "add_executable%(([^%s)]+)")
+  return target
 end
 
-local function build_and_run()
+--- Execute a command in the terminal
+local function run_in_terminal(cmd, close_on_exit)
+  if not cmd or cmd == "" then
+    vim.notify("No matching file format or command found", vim.log.levels.ERROR)
+    return
+  end
+  require("toggleterm.terminal").Terminal
+    :new({
+      cmd = cmd,
+      close_on_exit = close_on_exit or false,
+      hidden = true,
+    })
+    :toggle()
+end
+
+-- -----------------------------------------------------------
+-- Public API (for keybindings)
+-- -----------------------------------------------------------
+
+--- Compile and run
+function M.build_and_run()
   vim.api.nvim_command("write")
-  local build_dir = "build"
-  local build_gen = "Ninja"
-  local platform = vim.loop.os_uname().sysname
-  local file_name = vim.fn.expand("%:t")
-  local file_type = vim.bo.filetype
-  local file_path = vim.fn.expand("%:p:h")
-  local file_name_with_abs_path = vim.fn.expand("%:p")
-  local fileNameWithoutExt = vim.fn.expand("%:t:r")
-  -- build_dir = file_path .. "/" .. build_dir
 
-  local option = ""
-  -- option = "-std=c++20"
-  local build_target = fileNameWithoutExt
-
+  local ft = vim.bo.filetype
+  -- local fname = vim.fn.expand("%:t")
+  local fpath = vim.fn.expand("%:p:h")
+  local fname_abs = vim.fn.expand("%:p")
+  local fname_no_ext = vim.fn.expand("%:t:r")
+  local platform = vim.uv.os_uname().sysname
   local cmd = ""
 
-  if file_name and file_type then
-    if file_type == "python" then
-      cmd = ("python %s"):format(file_name)
-    elseif file_type == "c" or file_type == "cpp" or file_type == "cmake" then
-      if vim.fn.filereadable("CMakeLists.txt") == 1 then
-        build_target = match()
-        local run_target = ("%s/%s"):format(build_dir, build_target)
-        if vim.fn.isdirectory(build_dir) == 0 then
-          cmd = ("cmake -S %s -B %s -G %s -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON &&"):format(
-            file_path,
-            build_dir,
-            build_gen
-          )
-        end
-        cmd = cmd .. ("cmake --build %s --target %s &&"):format(build_dir, build_target)
-        cmd = cmd .. run_target
-      else
-        local run_target = "run_" .. build_target
-        if platform == "Windows_NT" then
-          local tmp = os.getenv("TMP")
-          run_target = tmp .. "\\" .. run_target
-          cmd = ("g++ %s -o %s %s && %s"):format(option, run_target, file_name_with_abs_path, run_target)
-        elseif platform == "Linux" then
-          cmd = ("g++ %s -o /tmp/%s '%s' && /tmp/%s"):format(option, run_target, file_name_with_abs_path, run_target)
-        end
+  if ft == "python" then
+    cmd = ("python %s"):format(fname_abs)
+  elseif ft == "c" or ft == "cpp" or ft == "cmake" then
+    local target = get_target_name()
+    if target then
+      -- CMake project
+      local run_path = ("%s/%s"):format(M.config.build_dir, target)
+      local cmake_build_cmd = ("cmake --build %s --target %s"):format(M.config.build_dir, target)
+      local cmake_configure_cmd = ""
+      if vim.fn.isdirectory(M.config.build_dir) == 0 then
+        cmake_configure_cmd = ("cmake -S %s -B %s -G %s -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON && "):format(
+          fpath,
+          M.config.build_dir,
+          M.config.build_gen
+        )
       end
-    elseif file_type == "markdown" then
-      vim.api.nvim_command("MarkdownPreview")
-      return
-    elseif file_type == "yacc" then
-      cmd = "bison  " .. file_name
-      -- elseif file_type == "java" then
-      --     cmd = "javac " .. file_name
-      --     cmd = "java " .. file_name
-      -- elseif file_type == "typst" then
-      --     vim.api.nvim_command("TypstWatch")
+      cmd = cmake_configure_cmd .. cmake_build_cmd .. " && " .. run_path
+    else
+      -- Compile single file
+      local run_target = "run_" .. fname_no_ext
+      local run_path = ""
+
+      if platform == "Windows_NT" then
+        run_path = M.config.tmp_dir .. "\\" .. run_target .. ".exe"
+        cmd = ("g++ %s -o %s %s && %s"):format(M.config.default_build_options, run_path, fname_abs, run_path)
+      elseif platform == "Linux" then
+        run_path = M.config.tmp_dir .. "/" .. run_target
+        cmd = ("g++ %s -o %s %s && %s"):format(M.config.default_build_options, run_path, fname_abs, run_path)
+      end
     end
+  -- elseif ft == "markdown" then
+  --   vim.api.nvim_command("MarkdownPreview")
+  --   return
+  elseif ft == "yacc" then
+    cmd = "bison " .. fname_abs
   end
-  if cmd == "" then
-    error("No matched file format found! ")
-  end
-  _G._my_wrapper_run_in_terminal({ cmd = cmd, close_on_exit = false })
+
+  run_in_terminal(cmd)
 end
 
-local function run()
-  local cmd = "build/"
-  local build_target = match()
-  cmd = cmd .. build_target
-  _G._my_wrapper_run_in_terminal({ cmd = cmd, close_on_exit = false })
+--- Only run
+function M.run()
+  local ft = vim.bo.filetype
+  local cmd = ""
+
+  if ft == "python" then
+    cmd = ("python %s"):format(vim.fn.expand("%:p"))
+  elseif ft == "c" or ft == "cpp" or ft == "cmake" then
+    local target = get_target_name()
+    if target then
+      cmd = ("%s/%s"):format(M.config.build_dir, target)
+    else
+      local run_target = "run_" .. vim.fn.expand("%:t:r")
+      local platform = vim.uv.os_uname().sysname
+      if platform == "Windows_NT" then
+        cmd = M.config.tmp_dir .. "\\" .. run_target .. ".exe"
+      elseif platform == "Linux" then
+        cmd = M.config.tmp_dir .. "/" .. run_target
+      end
+    end
+  else
+    vim.notify("Running not supported for current file type ", vim.log.levels.WARN)
+    return
+  end
+
+  run_in_terminal(cmd)
 end
 
-vim.keymap.set("n", "<F5>", build_and_run, { silent = true })
--- vim.keymap.set("n", "<F6>", run, { silent = true })
+-- -----------------------------------------------------------
+-- Keybinding settings
+-- -----------------------------------------------------------
+vim.keymap.set("n", "<F5>", M.build_and_run, { silent = true })
+vim.keymap.set("n", "<F6>", M.run, { silent = true })
+
+return M
