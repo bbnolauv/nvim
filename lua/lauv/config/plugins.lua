@@ -15,7 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- To-Do:
--- lspconfig lspsaga snack.picker
+-- emmylua_ls diagnostic warning
 
 require("lazy").setup({
   spec = {

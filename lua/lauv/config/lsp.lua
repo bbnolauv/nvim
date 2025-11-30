@@ -73,7 +73,7 @@ local function capabilities_on_attach(client, bufnr)
 
   -- Document highlight
   if client:supports_method(methods.textDocument_documentHighlight) then
-    local document_highlight_group = vim.api.nvim_create_augroup("rockyz.lsp.document_highlight", { clear = true })
+    local document_highlight_group = vim.api.nvim_create_augroup("lauv.lsp.document_highlight", { clear = true })
     vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
       group = document_highlight_group,
       buffer = bufnr,
