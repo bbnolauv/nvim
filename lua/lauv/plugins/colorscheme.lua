@@ -31,7 +31,7 @@ return {
     -- vim.api.nvim_set_hl(0, "VirtualTextWarning", { link = "DiagnosticWarn" })
     -- vim.api.nvim_set_hl(0, "VirtualTextError", { link = "DiagnosticError" })
 
-    vim.api.nvim_set_hl(0, "LspInlayHint", { link = "DiagnosticVirtualTextHint" })
+    vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#276f70", italic = true })
 
     vim.api.nvim_set_hl(0, "BlinkCmpSource", { link = "NormalFloat" })
     vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "Comment" })

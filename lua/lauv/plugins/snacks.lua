@@ -18,4 +18,7 @@ return {
     -- statuscolumn = { enabled = true },
     -- words = { enabled = true },
   },
+  vim.api.nvim_create_user_command("Notifications", function()
+    Snacks.notifier.show_history()
+  end, {}),
 }
