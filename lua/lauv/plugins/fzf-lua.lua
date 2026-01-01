@@ -7,7 +7,6 @@ return {
   opts = {
     fzf_colors = {
       true,
-      ["gutter"] = "-1",
     },
   },
 }

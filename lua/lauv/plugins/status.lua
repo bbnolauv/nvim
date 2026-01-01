@@ -187,18 +187,21 @@ return {
     --   },
     -- })
 
-    ins_right({
-      "diff",
-      symbols = { added = " ", modified = " ", removed = " " },
-      diff_color = {
-        added = { fg = colors.green },
-        modified = { fg = colors.orange },
-        removed = { fg = colors.red },
-      },
-      color = { bg = colors.bg },
-      cond = conditions.hide_in_width,
-    })
+    -- ins_right({
+    --   "diff",
+    --   symbols = { added = " ", modified = " ", removed = " " },
+    --   diff_color = {
+    --     added = { fg = colors.green },
+    --     modified = { fg = colors.orange },
+    --     removed = { fg = colors.red },
+    --   },
+    --   color = { bg = colors.bg },
+    --   cond = conditions.hide_in_width,
+    -- })
 
+    ins_right({
+      "%S",
+    })
     ins_right({
       "fileformat",
       fmt = string.upper,
