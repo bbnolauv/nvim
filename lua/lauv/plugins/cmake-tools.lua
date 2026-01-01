@@ -24,6 +24,9 @@ return {
     cmake_generate_options = { "-GNinja", "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
     cmake_build_directory = "build",
     -- cmake_soft_link_compile_commands = false,
+    cmake_compile_commands_options = {
+      action = "none",
+    },
 
     cmake_executor = {
       name = "quickfix",

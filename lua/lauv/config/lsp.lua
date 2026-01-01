@@ -1,7 +1,6 @@
 -- Disable lsp log
 vim.lsp.set_log_level("off")
 
-local methods = vim.lsp.protocol.Methods
 local function keymap_on_attach(bufnr)
   --
   -- Mappings
@@ -72,7 +71,7 @@ local function capabilities_on_attach(client, bufnr)
   end
 
   -- Document highlight
-  if client:supports_method(methods.textDocument_documentHighlight) then
+  if client:supports_method("textDocument/documentHighlight") then
     local document_highlight_group = vim.api.nvim_create_augroup("lauv.lsp.document_highlight", { clear = true })
     vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
       group = document_highlight_group,
@@ -105,7 +104,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Enable LSP servers
 local lsp_configs = {}
-for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*", true)) do
+for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
   local name = vim.fn.fnamemodify(v, ":t:r")
   lsp_configs[name] = true
 end
