@@ -58,7 +58,7 @@ function M.build_and_run()
   local cmd = ""
 
   if ft == "python" then
-    cmd = ("python %s"):format(fname_abs)
+    cmd = ("uv run %s"):format(fname_abs)
   elseif ft == "c" or ft == "cpp" or ft == "cmake" then
     local target = get_target_name()
     if target then
@@ -103,7 +103,7 @@ function M.run()
   local cmd = ""
 
   if ft == "python" then
-    cmd = ("python %s"):format(vim.fn.expand("%:p"))
+    cmd = ("uv run %s"):format(vim.fn.expand("%:p"))
   elseif ft == "c" or ft == "cpp" or ft == "cmake" then
     local target = get_target_name()
     if target then

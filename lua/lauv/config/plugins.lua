@@ -15,8 +15,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- To-Do:
--- emmylua_ls diagnostic warning
+-- emmylua_ls diagnostic warning ?
+-- treesitter immigration
 
+--- @diagnostic disable-next-line: param-type-mismatch, missing-fields
 require("lazy").setup({
   spec = {
     { import = "lauv.plugins.lib" },
