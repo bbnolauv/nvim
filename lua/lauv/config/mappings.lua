@@ -80,3 +80,9 @@ map("n", "<leader>go", ":Copilot<CR>", { silent = true })
 
 -- ImagePaste (Unavilable)
 -- map({ "n", "i", "v" }, "<leader>vv", "<cmd>PasteImg<cr>", { silent = true })
+
+---@type Utils.runner
+local UtilRunner = require("lauv.utils.runner")
+
+map("n", "<F5>", UtilRunner.build_and_run, { silent = true })
+map("n", "<F6>", UtilRunner.run, { silent = true })

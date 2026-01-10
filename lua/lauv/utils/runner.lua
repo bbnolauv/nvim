@@ -1,6 +1,7 @@
 -- -----------------------------------------------------------
 -- Module definition and configuration
 -- -----------------------------------------------------------
+---@class Utils.runner
 local M = {}
 
 M.config = {
@@ -123,11 +124,5 @@ function M.run()
 
   run_in_terminal(cmd)
 end
-
--- -----------------------------------------------------------
--- Keybinding settings
--- -----------------------------------------------------------
-vim.keymap.set("n", "<F5>", M.build_and_run, { silent = true })
-vim.keymap.set("n", "<F6>", M.run, { silent = true })
 
 return M

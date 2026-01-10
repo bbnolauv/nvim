@@ -29,5 +29,3 @@ require("lazy").setup({
     border = "rounded",
   },
 })
-
-require("lauv.utils.runner")
