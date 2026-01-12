@@ -1,14 +1,18 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPost", "BufNewFile" },
+  branch = "main",
+  lazy = false, -- Does not support lazy-loading
   build = ":TSUpdate",
-  main = "nvim-treesitter.configs",
-  opts = {
-    ensure_installed = {
+  config = function()
+    local nvim_ts = require("nvim-treesitter")
+
+    local ensure_installed = {
       "bash",
       "c",
       "cmake",
       "cpp",
+      "diff",
+      "gitcommit",
       "json",
       "lua",
       "markdown",
@@ -16,22 +20,36 @@ return {
       "python",
       "vim",
       "vimdoc",
-    }, -- INFO: add your language here
-    highlight = {
-      enable = true,
-      disable = {}, -- list of language that will be disabled
-    },
-    indent = {
-      enable = false,
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "<CR>",
-        node_incremental = "<CR>",
-        node_decremental = "<BS>",
-        scope_incremental = "<TAB>",
-      },
-    },
-  },
+    }
+    nvim_ts.install(ensure_installed)
+
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "*" },
+      desc = "Enable treesitter-based features for supported filetypes",
+      callback = function(args)
+        local ft = vim.bo[args.buf].filetype
+        local lang = vim.treesitter.language.get_lang(ft)
+
+        if not vim.treesitter.language.add(lang) then
+          local available = vim.g.ts_available or nvim_ts.get_available()
+          if not vim.g.ts_available then
+            vim.g.ts_available = available
+          end
+          if vim.tbl_contains(available, lang) then
+            require("nvim-treesitter").install(lang)
+          end
+        end
+
+        if vim.treesitter.language.add(lang) then
+          -- Syntax highlighting
+          vim.treesitter.start()
+          -- Folds
+          vim.wo.foldmethod = "expr"
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          -- Indentation
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+      end,
+    })
+  end,
 }
