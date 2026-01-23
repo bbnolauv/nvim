@@ -1,6 +1,7 @@
 return {
   "akinsho/toggleterm.nvim",
   cmd = "ToggleTerm",
+  keys = { { "<F8>", "<cmd>ToggleTerm<CR>", desc = "Open toggleterm" } },
   version = "*",
   opts = {
     size = function(term)

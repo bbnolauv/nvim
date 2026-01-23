@@ -1,4 +1,4 @@
--- use space as a the leader key
+-- use space as the leader key
 vim.g.mapleader = " "
 
 if vim.fn.has("nvim-0.11") == 1 then
@@ -45,38 +45,6 @@ map({ "v", "n", "t" }, "<C-h>", [[<C-w>h]])
 map({ "v", "n", "t" }, "<C-j>", [[<C-w>j]])
 map({ "v", "n", "t" }, "<C-k>", [[<C-w>k]])
 map({ "v", "n", "t" }, "<C-l>", [[<C-w>l]])
-
--- fzf-lua
-map("n", "<leader>u", "<cmd>FzfLua files<cr>")
-map("n", "<leader>o", "<cmd>FzfLua oldfiles<cr>")
-map("n", "<leader>i", "<cmd>FzfLua git_files<cr>")
-map("n", "<leader>p", "<cmd>FzfLua git_status<cr>")
-map("n", "<leader>k", "<cmd>FzfLua live_grep<cr>")
-map("n", "<leader>l", "<cmd>FzfLua buffers<cr>")
-map("n", "<leader>m", "<cmd>FzfLua marks<CR>")
-map("n", "<leader>f", function()
-  require("fzf-lua").lsp_document_symbols({
-    regex_filter = function(item, _)
-      local kind = item.kind
-      return kind == "Struct" or kind == "Enum" or kind == "Method" or kind == "Function"
-    end,
-  })
-end)
-
--- Trouble
-map("n", "<leader>t", "<cmd>Trouble diagnostics toggle focus=true<cr>", { silent = true })
-
--- Term
-map("n", "<F8>", "<cmd>ToggleTerm<CR>", { silent = true })
-
--- Copilot
-map("n", "<leader>go", ":Copilot<CR>", { silent = true })
-
--- Undotree (doesnt work)
--- map('n', '<F7>', '<cmd>UndotreeToggle<CR>', { silent = true })
-
--- ImagePaste (Unavilable)
--- map({ "n", "i", "v" }, "<leader>vv", "<cmd>PasteImg<cr>", { silent = true })
 
 ---@type Utils.runner
 local UtilRunner = require("lauv.utils.runner")
