@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 -- To-Do:
 -- emmylua_ls diagnostic warning ?
 -- treesitter immigration
+-- vim.opt/o immigration
 
 --- @diagnostic disable-next-line: param-type-mismatch, missing-fields
 require("lazy").setup({

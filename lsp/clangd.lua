@@ -33,6 +33,10 @@ end
 
 -- Check if compile_commands.json needs to be generated based on age/existence.
 local function should_generate_commands(root_dir, CONFIG)
+  if not root_dir then
+    return false
+  end
+
   local now = os.time()
   local candidates = {
     vim.fs.joinpath(root_dir, "compile_commands.json"),
