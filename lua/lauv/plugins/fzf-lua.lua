@@ -32,5 +32,6 @@ return {
     fzf_colors = {
       true,
     },
+    ui_select = true,
   },
 }
