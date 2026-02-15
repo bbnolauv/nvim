@@ -51,3 +51,4 @@ local UtilRunner = require("lauv.utils.runner")
 
 map("n", "<F5>", UtilRunner.build_and_run, { silent = true })
 map("n", "<F6>", UtilRunner.run, { silent = true })
+map("n", "<leader>gg", UtilRunner.lazygit, { silent = true })

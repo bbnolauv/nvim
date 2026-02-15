@@ -125,4 +125,36 @@ function M.run()
   run_in_terminal(cmd)
 end
 
+local _lazygit_term = nil
+
+function M.lazygit()
+  if vim.fn.executable("lazygit") ~= 1 then
+    vim.notify("lazygit not found. Please install it first.", vim.log.levels.ERROR)
+    return
+  end
+  if not _lazygit_term then
+    local Terminal = require("toggleterm.terminal").Terminal
+    _lazygit_term = Terminal:new({
+      cmd = "lazygit",
+      direction = "float",
+      close_on_exit = true,
+      float_opts = {
+        height = math.floor(vim.o.lines * 0.9),
+      },
+      on_exit = function()
+        _lazygit_term = nil
+      end,
+      on_open = function(term)
+        vim.keymap.set("t", "<c-h>", function()
+          term:toggle()
+        end, { buffer = term.bufnr, silent = true })
+      end,
+    })
+  end
+
+  if _lazygit_term then
+    _lazygit_term:toggle()
+  end
+end
+
 return M
