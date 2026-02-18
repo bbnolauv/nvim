@@ -14,11 +14,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- To-Do:
--- emmylua_ls diagnostic warning ?
--- treesitter immigration
--- vim.opt/o immigration
-
 require("lazy").setup({
   spec = {
     { import = "lauv.plugins.lib" },
