@@ -20,7 +20,7 @@ return {
     vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE" })
-    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE" })
+    -- vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE" })
 
     vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE" })
