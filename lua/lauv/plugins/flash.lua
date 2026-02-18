@@ -1,6 +1,6 @@
 return {
   "folke/flash.nvim",
-  ---@type Flash.Config
+  ---@type Flash.Config|{}
   opts = {},
   -- stylua: ignore
   keys = {

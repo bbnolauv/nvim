@@ -29,6 +29,9 @@ return {
       callback = function(args)
         local ft = vim.bo[args.buf].filetype
         local lang = vim.treesitter.language.get_lang(ft)
+        if not lang then
+          return
+        end
 
         if not vim.treesitter.language.add(lang) then
           local available = vim.g.ts_available or nvim_ts.get_available()

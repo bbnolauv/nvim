@@ -27,7 +27,7 @@ return {
   -- stylua: ignore end
 
   ---@module "fzf-lua"
-  ---@type fzf-lua.Config|{}
+  ---@type fzf-lua.Config
   opts = {
     fzf_colors = {
       true,

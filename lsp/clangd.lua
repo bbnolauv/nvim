@@ -81,7 +81,6 @@ end
 
 -- Prepare Capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.offsetEncoding = { "utf-8", "utf-16" }
 
 ---@class ClangdInitializeResult: lsp.InitializeResult
 ---@type vim.lsp.Config
@@ -124,6 +123,7 @@ return {
   ---@param bufnr integer
   on_attach = function(client, bufnr)
     -- Function to switch between source file and header
+    --- @diagnostic disable param-type-mismatch
     local function switch_source_header()
       local method_name = "textDocument/switchSourceHeader"
       if not client:supports_method(method_name) then
@@ -165,6 +165,7 @@ return {
         })
       end, bufnr)
     end
+    --- @diagnostic enable param-type-mismatch
 
     -- Create User Commands
     vim.api.nvim_buf_create_user_command(bufnr, "ClangdSwitchSourceHeader", function()
