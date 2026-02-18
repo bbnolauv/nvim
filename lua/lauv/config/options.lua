@@ -142,9 +142,17 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.opt_local.formatoptions:remove("o")
   end,
 })
--- vim.cmd [[
--- augroup disable_formatoptions_cro
--- autocmd!
--- autocmd BufEnter * setlocal formatoptions-=cro
--- augroup end
--- ]]
+
+-- -- smart number
+-- vim.api.nvim_create_autocmd("InsertEnter", {
+--   group = augroup("smart_number1"),
+--   callback = function()
+--     vim.opt_local.relativenumber = false
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd("InsertLeave", {
+--   group = augroup("smart_number2"),
+--   callback = function()
+--     vim.opt_local.relativenumber = true
+--   end,
+-- })
