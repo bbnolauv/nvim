@@ -52,3 +52,14 @@ local UtilRunner = require("lauv.utils.runner")
 map("n", "<F5>", UtilRunner.build_and_run, { silent = true })
 map("n", "<F6>", UtilRunner.run, { silent = true })
 map("n", "<leader>gg", UtilRunner.lazygit, { silent = true })
+
+vim.api.nvim_create_user_command("Diagnostics", function(opts)
+  local bufnr = opts.bang and 0 or nil
+  if #vim.diagnostic.get(bufnr) > 0 then
+    vim.diagnostic.setqflist()
+  else
+    vim.notify("No diagnostics found", vim.log.levels.WARN)
+  end
+end, { bang = true, desc = "Send diagnostics to quickfix list" })
+
+map("n", "<leader>t", "<cmd>Diagnostics<cr>", { silent = true })
