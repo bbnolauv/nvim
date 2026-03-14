@@ -54,12 +54,19 @@ map("n", "<F6>", UtilRunner.run, { silent = true })
 map("n", "<leader>gg", UtilRunner.lazygit, { silent = true })
 
 vim.api.nvim_create_user_command("Diagnostics", function(opts)
-  local bufnr = opts.bang and 0 or nil
-  if #vim.diagnostic.get(bufnr) > 0 then
-    vim.diagnostic.setqflist()
+  local qf_info = vim.fn.getqflist({ title = 1, winid = 1 })
+
+  -- Toggle action only if the quickfix window is open AND it's our diagnostics list.
+  if qf_info.winid ~= 0 and qf_info.title == "Diagnostics" then
+    vim.cmd.cclose()
   else
-    vim.notify("No diagnostics found", vim.log.levels.WARN)
+    local bufnr = opts.bang and 0 or nil
+    if #vim.diagnostic.get(bufnr) > 0 then
+      vim.diagnostic.setqflist({ title = "Diagnostics" })
+    else
+      vim.notify("No diagnostics found", vim.log.levels.WARN)
+    end
   end
-end, { bang = true, desc = "Send diagnostics to quickfix list" })
+end, { bang = true, desc = "Toggle diagnostics in quickfix list" })
 
 map("n", "<leader>t", "<cmd>Diagnostics<cr>", { silent = true })
