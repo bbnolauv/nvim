@@ -24,7 +24,7 @@ return {
     nvim_ts.install(ensure_installed)
 
     vim.api.nvim_create_autocmd("FileType", {
-      pattern = { "*" },
+      pattern = ensure_installed,
       desc = "Enable treesitter-based features for supported filetypes",
       callback = function(args)
         local ft = vim.bo[args.buf].filetype
@@ -39,7 +39,7 @@ return {
             vim.g.ts_available = available
           end
           if vim.tbl_contains(available, lang) then
-            require("nvim-treesitter").install(lang)
+            nvim_ts.install(lang)
           end
         end
 
