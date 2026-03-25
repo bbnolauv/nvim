@@ -13,6 +13,7 @@ return {
       "cpp",
       "diff",
       "gitcommit",
+      "go",
       "json",
       "lua",
       "markdown",
