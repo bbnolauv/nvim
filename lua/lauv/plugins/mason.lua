@@ -1,7 +1,7 @@
 return {
   {
     "mason-org/mason.nvim",
-    cond = false,
+    cmd = "Mason",
     opts = {
       ui = {
         icons = {
