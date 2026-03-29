@@ -29,4 +29,10 @@ return {
       true,
     },
   },
+  init = function()
+    vim.ui.select = function(...)
+      require('fzf-lua').register_ui_select()
+      vim.ui.select(...)
+    end
+  end,
 }
