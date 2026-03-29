@@ -1,26 +1,26 @@
 return {
-  "luukvbaal/statuscol.nvim",
+  'luukvbaal/statuscol.nvim',
   opts = function()
-    local builtin = require("statuscol.builtin")
+    local builtin = require('statuscol.builtin')
 
     return {
-      bt_ignore = { "nofile", "terminal" },
+      bt_ignore = { 'nofile', 'terminal' },
       ft_ignore = nil,
       segments = {
         {
           sign = {
-            name = { ".*" },
-            text = { ".*" },
+            name = { '.*' },
+            text = { '.*' },
           },
-          click = "v:lua.ScSa",
+          click = 'v:lua.ScSa',
         },
         {
           text = { builtin.lnumfunc },
-          click = "v:lua.ScLa",
+          click = 'v:lua.ScLa',
         },
         {
           sign = {
-            namespace = { "gitsigns" },
+            namespace = { 'gitsigns' },
             colwidth = 1,
             wrap = true,
             foldclosed = true,
@@ -30,18 +30,18 @@ return {
               return vim.wo[args.win].number or vim.b[args.buf].gitsigns_status
             end,
           },
-          click = "v:lua.ScSa",
+          click = 'v:lua.ScSa',
         },
         {
           text = {
             function(args)
-              args.fold.close = ""
-              args.fold.open = ""
-              args.fold.sep = " "
+              args.fold.close = ''
+              args.fold.open = ''
+              args.fold.sep = ' '
               return builtin.foldfunc(args)
             end,
           },
-          click = "v:lua.ScFa",
+          click = 'v:lua.ScFa',
         },
       },
     }

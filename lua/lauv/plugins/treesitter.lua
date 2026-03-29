@@ -1,32 +1,32 @@
 return {
-  "nvim-treesitter/nvim-treesitter",
-  branch = "main",
+  'nvim-treesitter/nvim-treesitter',
+  branch = 'main',
   lazy = false, -- Does not support lazy-loading
-  build = ":TSUpdate",
+  build = ':TSUpdate',
   config = function()
-    local nvim_ts = require("nvim-treesitter")
+    local nvim_ts = require('nvim-treesitter')
 
     local ensure_installed = {
-      "bash",
-      "c",
-      "cmake",
-      "cpp",
-      "diff",
-      "gitcommit",
-      "go",
-      "json",
-      "lua",
-      "markdown",
-      "markdown_inline",
-      "python",
-      "vim",
-      "vimdoc",
+      'bash',
+      'c',
+      'cmake',
+      'cpp',
+      'diff',
+      'gitcommit',
+      'go',
+      'json',
+      'lua',
+      'markdown',
+      'markdown_inline',
+      'python',
+      'vim',
+      'vimdoc',
     }
     nvim_ts.install(ensure_installed)
 
-    vim.api.nvim_create_autocmd("FileType", {
+    vim.api.nvim_create_autocmd('FileType', {
       pattern = ensure_installed,
-      desc = "Enable treesitter-based features for supported filetypes",
+      desc = 'Enable treesitter-based features for supported filetypes',
       callback = function(args)
         local ft = vim.bo[args.buf].filetype
         local lang = vim.treesitter.language.get_lang(ft)
@@ -48,8 +48,8 @@ return {
           -- Syntax highlighting
           vim.treesitter.start()
           -- Folds
-          vim.wo.foldmethod = "expr"
-          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
           -- Indentation
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end

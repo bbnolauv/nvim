@@ -14,21 +14,21 @@
 
 ---@type vim.lsp.Config
 return {
-  cmd = { "emmylua_ls" },
-  filetypes = { "lua" },
+  cmd = { 'emmylua_ls' },
+  filetypes = { 'lua' },
   root_markers = {
-    ".emmyrc.json",
-    ".luarc.json",
-    ".luacheckrc",
-    ".git",
+    '.emmyrc.json',
+    '.luarc.json',
+    '.luacheckrc',
+    '.git',
   },
   workspace_required = true,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
       if
-        path ~= vim.fn.stdpath("config")
-        and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.emmyrc.json"))
+        path ~= vim.fn.stdpath('config')
+        and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.emmyrc.json'))
       then
         return
       end

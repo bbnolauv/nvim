@@ -1,8 +1,8 @@
 return {
-  "folke/flash.nvim",
+  'folke/flash.nvim',
   ---@type Flash.Config|{}
   opts = {
-    highlight = { groups = { label = "Visual" } },
+    highlight = { groups = { label = 'Visual' } },
   },
   -- stylua: ignore
   keys = {

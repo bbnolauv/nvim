@@ -1,6 +1,6 @@
 return {
-  "folke/noice.nvim",
-  event = "VeryLazy",
+  'folke/noice.nvim',
+  event = 'VeryLazy',
   -- dependencies = { "MunifTanjim/nui.nvim" },
   cond = false,
   opts = {

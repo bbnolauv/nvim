@@ -20,25 +20,25 @@ local colors = {
 
 local custom_theme = {
   normal = {
-    a = { fg = colors.black, bg = colors.blue, gui = "bold" },
+    a = { fg = colors.black, bg = colors.blue, gui = 'bold' },
     b = { fg = colors.marble, bg = colors.gray },
     c = { fg = colors.fg, bg = colors.bg },
   },
-  command = { a = { fg = colors.black, bg = colors.red, gui = "bold" } },
-  insert = { a = { fg = colors.black, bg = colors.green, gui = "bold" } },
-  visual = { a = { fg = colors.black, bg = colors.orange, gui = "bold" } },
-  terminal = { a = { fg = colors.black, bg = colors.red, gui = "bold" } },
-  replace = { a = { fg = colors.black, bg = colors.red, gui = "bold" } },
+  command = { a = { fg = colors.black, bg = colors.red, gui = 'bold' } },
+  insert = { a = { fg = colors.black, bg = colors.green, gui = 'bold' } },
+  visual = { a = { fg = colors.black, bg = colors.orange, gui = 'bold' } },
+  terminal = { a = { fg = colors.black, bg = colors.red, gui = 'bold' } },
+  replace = { a = { fg = colors.black, bg = colors.red, gui = 'bold' } },
   inactive = {
-    a = { fg = colors.darkgray, bg = colors.bg, gui = "bold" },
+    a = { fg = colors.darkgray, bg = colors.bg, gui = 'bold' },
     b = { fg = colors.darkgray, bg = colors.bg },
     c = { fg = colors.darkgray, bg = colors.gray },
   },
 }
 
 return {
-  "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
+  'nvim-lualine/lualine.nvim',
+  event = 'VeryLazy',
   opts = {
     options = {
       theme = custom_theme,
@@ -46,19 +46,19 @@ return {
     sections = {
       lualine_a = {
         {
-          "mode",
-          icon = "",
-          separator = { left = "", right = "" },
+          'mode',
+          icon = '',
+          separator = { left = '', right = '' },
         },
       },
       lualine_b = {
-        { "branch", icon = "" },
-        "diff",
-        "diagnostics",
+        { 'branch', icon = '' },
+        'diff',
+        'diagnostics',
       },
 
-      lualine_x = { "lsp_status", "filetype" },
-      lualine_z = { { "location", separator = { left = "", right = "" } } },
+      lualine_x = { 'lsp_status', 'filetype' },
+      lualine_z = { { 'location', separator = { left = '', right = '' } } },
     },
   },
 }

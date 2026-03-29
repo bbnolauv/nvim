@@ -1,6 +1,6 @@
 ---@type LazyPluginSpec
 return {
-  "hedyhli/outline.nvim",
-  cmd = { "Outline", "OutlineOpen" },
+  'hedyhli/outline.nvim',
+  cmd = { 'Outline', 'OutlineOpen' },
   opts = {},
 }

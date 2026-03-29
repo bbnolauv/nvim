@@ -1,8 +1,8 @@
 return {
-  "ibhagwan/fzf-lua",
+  'ibhagwan/fzf-lua',
   -- optional for icon support
   -- dependencies = { "nvim-tree/nvim-web-devicons" },
-  cmd = "FzfLua",
+  cmd = 'FzfLua',
   -- stylua: ignore start
   keys = {
     { "<leader>fb", function() FzfLua.buffers() end,              desc = "FzfLua buffers", },

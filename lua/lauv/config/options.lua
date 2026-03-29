@@ -1,44 +1,44 @@
 local option_table = {
-  cinoptions = "j1,(0,ws,Ws,g0",
+  cinoptions = 'j1,(0,ws,Ws,g0',
   conceallevel = 2,
   cursorline = true,
-  cursorlineopt = "number",
+  cursorlineopt = 'number',
   expandtab = true,
-  foldcolumn = "1",
+  foldcolumn = '1',
   foldenable = true,
   foldlevel = 99,
   foldlevelstart = 99,
   fillchars = {
-    eob = " ",
-    diff = "╱",
-    foldopen = "",
-    foldclose = "",
-    foldsep = "▕",
-    foldinner = "▕",
+    eob = ' ',
+    diff = '╱',
+    foldopen = '',
+    foldclose = '',
+    foldsep = '▕',
+    foldinner = '▕',
   },
   laststatus = 3,
   list = true,
   listchars = {
-    extends = "❯",
-    leadmultispace = "| ",
-    precedes = "❮",
-    tab = "▸ ",
-    trail = "⋅",
+    extends = '❯',
+    leadmultispace = '| ',
+    precedes = '❮',
+    tab = '▸ ',
+    trail = '⋅',
   },
-  mouse = "a",
+  mouse = 'a',
   number = true,
   relativenumber = true,
   scrolloff = 4,
   shiftwidth = 2,
-  showbreak = "↪",
+  showbreak = '↪',
   -- showcmdloc = "statusline",
   showmode = false,
   sidescrolloff = 4,
-  signcolumn = "yes",
+  signcolumn = 'yes',
   softtabstop = 0,
-  switchbuf = "useopen",
+  switchbuf = 'useopen',
   tabstop = 2,
-  winborder = "rounded",
+  winborder = 'rounded',
   -- undofile = true,
 }
 
@@ -47,66 +47,66 @@ for k, v in pairs(option_table) do
 end
 
 -- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
-if os.getenv("SSH_TTY") == nil then
+if os.getenv('SSH_TTY') == nil then
   --Current env is local, include WSL
-  vim.opt.clipboard:append("unnamedplus")
+  vim.opt.clipboard:append('unnamedplus')
 else
   -- Issue of windows terminal, check link below:
   -- https://github.com/microsoft/terminal/issues/17735
   vim.g.clipboard = {
-    name = "OSC 52",
+    name = 'OSC 52',
     copy = {
-      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
     },
     paste = {
-      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
     },
   }
 end
 
-if vim.fn.has("nvim-0.10") == 1 then
+if vim.fn.has('nvim-0.10') == 1 then
   vim.opt.smoothscroll = true
 end
 
 local function augroup(name)
-  return vim.api.nvim_create_augroup("lauvvim_" .. name, { clear = true })
+  return vim.api.nvim_create_augroup('lauvvim_' .. name, { clear = true })
 end
 
 -- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = augroup("checktime"),
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = augroup('checktime'),
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
+    if vim.o.buftype ~= 'nofile' then
+      vim.cmd('checktime')
     end
   end,
 })
 
 -- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("highlight_yank"),
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = augroup('highlight_yank'),
   callback = function()
     vim.highlight.on_yank()
   end,
 })
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = augroup("resize_splits"),
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = augroup('resize_splits'),
   callback = function()
     local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
+    vim.cmd('tabdo wincmd =')
+    vim.cmd('tabnext ' .. current_tab)
   end,
 })
 
 -- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = augroup("last_loc"),
+vim.api.nvim_create_autocmd('BufReadPost', {
+  group = augroup('last_loc'),
   callback = function(event)
-    local exclude = { "gitcommit" }
+    local exclude = { 'gitcommit' }
     local buf = event.buf
     if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
       return
@@ -121,25 +121,25 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = augroup("auto_create_dir"),
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  group = augroup('auto_create_dir'),
   callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
+    if event.match:match('^%w%w+:[\\/][\\/]') then
       return
     end
     local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
 })
 
 -- don't extend the stupid comments:
-vim.api.nvim_create_autocmd("BufEnter", {
-  group = augroup("disable_formatoptions_cro"),
-  pattern = "*",
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = augroup('disable_formatoptions_cro'),
+  pattern = '*',
   callback = function()
-    vim.opt_local.formatoptions:remove("c")
-    vim.opt_local.formatoptions:remove("r")
-    vim.opt_local.formatoptions:remove("o")
+    vim.opt_local.formatoptions:remove('c')
+    vim.opt_local.formatoptions:remove('r')
+    vim.opt_local.formatoptions:remove('o')
   end,
 })
 

@@ -1,6 +1,6 @@
 ---@type LazyPluginSpec
 return {
-  "bbnolauv/dressing.nvim",
-  event = "VeryLazy",
+  'bbnolauv/dressing.nvim',
+  event = 'VeryLazy',
   opts = {},
 }

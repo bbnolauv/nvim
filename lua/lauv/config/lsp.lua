@@ -1,5 +1,5 @@
 -- Disable lsp log
-vim.lsp.log.set_level("off")
+vim.lsp.log.set_level('off')
 
 local function keymap_on_attach(bufnr)
   --
@@ -22,13 +22,13 @@ local function keymap_on_attach(bufnr)
   --  * <C-w>d and <C-w><C-d> map to vim.diagnostic.open_float()
 
   local opts = { buffer = bufnr }
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, opts)
-  vim.keymap.set("n", "gI", vim.lsp.buf.implementation, opts)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, nowait = true })
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-  vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = bufnr, nowait = true })
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, opts)
   -- Code actions for the current line.
   -- In order to get the code actions only for the cursor position, the diagnostics overlap the
   -- cursor position could be passed as part of the parameter to vim.lsp.buf.code_action(). However,
@@ -37,10 +37,10 @@ local function keymap_on_attach(bufnr)
   --
   -- TODO: modify this keymap to only get the code actions for the current cursor position after the
   -- API is fixed.
-  vim.keymap.set({ "n", "x" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
+  vim.keymap.set({ 'n', 'x' }, '<Leader>ca', vim.lsp.buf.code_action, opts)
 
   -- Diagnostics
-  vim.keymap.set("n", "go", vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', 'go', vim.diagnostic.open_float, opts)
   -- vim.keymap.set("n", "[d", function() -- previous
   --   vim.diagnostic.jump({ count = -vim.v.count1 })
   -- end, opts)
@@ -53,27 +53,27 @@ local function keymap_on_attach(bufnr)
   -- vim.keymap.set("n", "]D", function() -- last
   --   vim.diagnostic.jump({ 9999, wrap = false })
   -- end)
-  vim.keymap.set("n", "[e", function() -- previous error
+  vim.keymap.set('n', '[e', function() -- previous error
     vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR })
   end, opts)
-  vim.keymap.set("n", "]e", function() -- next error
+  vim.keymap.set('n', ']e', function() -- next error
     vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })
   end, opts)
 end
 
 local function capabilities_on_attach(client, bufnr)
-  if client:supports_method("textDocument/inlayHint") then
+  if client:supports_method('textDocument/inlayHint') then
     vim.lsp.inlay_hint.enable(true)
     -- Toggle inlay_hint
-    vim.keymap.set("n", "\\ih", function()
+    vim.keymap.set('n', '\\ih', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, { buffer = bufnr })
   end
 
-  if client:supports_method("textDocument/codeLens") then
+  if client:supports_method('textDocument/codeLens') then
     vim.lsp.codelens.enable()
     -- Toggle codelens
-    vim.keymap.set("n", "\\cl", function()
+    vim.keymap.set('n', '\\cl', function()
       vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
     end, { buffer = bufnr })
   end
@@ -83,16 +83,17 @@ local function capabilities_on_attach(client, bufnr)
   end
 
   -- Document highlight
-  if client:supports_method("textDocument/documentHighlight") then
-    local document_highlight_group = vim.api.nvim_create_augroup("lauv.lsp.document_highlight", { clear = true })
-    vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
+  if client:supports_method('textDocument/documentHighlight') then
+    local document_highlight_group =
+      vim.api.nvim_create_augroup('lauv.lsp.document_highlight', { clear = true })
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
       group = document_highlight_group,
       buffer = bufnr,
       callback = function()
         vim.lsp.buf.document_highlight()
       end,
     })
-    vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
+    vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
       group = document_highlight_group,
       buffer = bufnr,
       callback = function()
@@ -103,7 +104,7 @@ local function capabilities_on_attach(client, bufnr)
 end
 
 -- Set keymap for LSP
-vim.api.nvim_create_autocmd("LspAttach", {
+vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local bufnr = args.buf
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -116,8 +117,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Enable LSP servers
 local lsp_configs = {}
-for _, v in ipairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
-  local name = vim.fn.fnamemodify(v, ":t:r")
+for _, v in ipairs(vim.api.nvim_get_runtime_file('lsp/*.lua', true)) do
+  local name = vim.fn.fnamemodify(v, ':t:r')
   lsp_configs[name] = true
 end
 

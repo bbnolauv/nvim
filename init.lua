@@ -1,2 +1,2 @@
 vim.loader.enable()
-require("lauv")
+require('lauv')

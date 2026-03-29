@@ -1,9 +1,9 @@
 return {
-  "zbirenbaum/copilot.lua",
-  cmd = "Copilot",
-  keys = { { "<leader>go", ":Copilot<CR>", desc = "Open copilot" } },
+  'zbirenbaum/copilot.lua',
+  cmd = 'Copilot',
+  keys = { { '<leader>go', ':Copilot<CR>', desc = 'Open copilot' } },
   cond = false,
-  build = ":Copilot auth",
+  build = ':Copilot auth',
   opts = {
     suggestion = {
       enabled = not vim.g.ai_cmp,
@@ -11,8 +11,8 @@ return {
       hide_during_completion = vim.g.ai_cmp,
       keymap = {
         accept = false, -- handled by nvim-cmp / blink.cmp
-        next = "<M-]>",
-        prev = "<M-[>",
+        next = '<M-]>',
+        prev = '<M-[>',
       },
     },
     panel = { enabled = false },

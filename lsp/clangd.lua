@@ -21,14 +21,14 @@
 
 local BUILD_CONFIG = {
   cache_timeout = 600, -- 10 minutes
-  cmake_build_dir = "build",
+  cmake_build_dir = 'build',
 }
 
 local function has_cmakelists(root_dir)
   if not root_dir then
     return false
   end
-  return vim.uv.fs_stat(vim.fs.joinpath(root_dir, "CMakeLists.txt")) ~= nil
+  return vim.uv.fs_stat(vim.fs.joinpath(root_dir, 'CMakeLists.txt')) ~= nil
 end
 
 -- Check if compile_commands.json needs to be generated based on age/existence.
@@ -39,8 +39,8 @@ local function should_generate_commands(root_dir, CONFIG)
 
   local now = os.time()
   local candidates = {
-    vim.fs.joinpath(root_dir, "compile_commands.json"),
-    vim.fs.joinpath(root_dir, CONFIG.cmake_build_dir, "compile_commands.json"),
+    vim.fs.joinpath(root_dir, 'compile_commands.json'),
+    vim.fs.joinpath(root_dir, CONFIG.cmake_build_dir, 'compile_commands.json'),
   }
 
   for _, path in ipairs(candidates) do
@@ -56,25 +56,25 @@ end
 -- Core logic to generate compile_commands.json using cmake-tools
 local function generate_compile_commands(root_dir)
   if not has_cmakelists(root_dir) then
-    return vim.notify("CMakeLists.txt not found, skipping generation", vim.log.levels.WARN)
+    return vim.notify('CMakeLists.txt not found, skipping generation', vim.log.levels.WARN)
   end
 
-  if vim.fn.executable("cmake") ~= 1 then
-    return vim.notify("CMake executable not found, skipping generation", vim.log.levels.WARN)
+  if vim.fn.executable('cmake') ~= 1 then
+    return vim.notify('CMake executable not found, skipping generation', vim.log.levels.WARN)
   end
 
-  local ok, cmake_tools = pcall(require, "cmake-tools")
+  local ok, cmake_tools = pcall(require, 'cmake-tools')
   if not ok then
-    return vim.notify("cmake-tools.nvim not found, skipping generation", vim.log.levels.WARN)
+    return vim.notify('cmake-tools.nvim not found, skipping generation', vim.log.levels.WARN)
   end
 
-  vim.notify("[LSP] Generating compilation database...", vim.log.levels.INFO)
+  vim.notify('[LSP] Generating compilation database...', vim.log.levels.INFO)
   --- @diagnostic disable-next-line: need-check-nil
   cmake_tools.generate({}, function(result)
     if result:is_ok() then
-      vim.notify("[LSP] Compilation database generated.", vim.log.levels.INFO)
+      vim.notify('[LSP] Compilation database generated.', vim.log.levels.INFO)
     else
-      vim.notify("[LSP] CMake generation failed.", vim.log.levels.ERROR)
+      vim.notify('[LSP] CMake generation failed.', vim.log.levels.ERROR)
     end
   end)
 end
@@ -86,24 +86,24 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 ---@type vim.lsp.Config
 return {
   cmd = {
-    "clangd",
-    "--background-index",
-    "--clang-tidy",
-    "--header-insertion=iwyu",
-    "--completion-style=detailed",
-    "--function-arg-placeholders",
-    "--fallback-style=llvm",
-    "--pch-storage=memory",
+    'clangd',
+    '--background-index',
+    '--clang-tidy',
+    '--header-insertion=iwyu',
+    '--completion-style=detailed',
+    '--function-arg-placeholders',
+    '--fallback-style=llvm',
+    '--pch-storage=memory',
   },
-  filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
   root_markers = {
-    ".clangd",
-    ".clang-tidy",
-    ".clang-format",
-    "compile_commands.json",
-    "compile_flags.txt",
-    "CMakeLists.txt",
-    ".git",
+    '.clangd',
+    '.clang-tidy',
+    '.clang-format',
+    'compile_commands.json',
+    'compile_flags.txt',
+    'CMakeLists.txt',
+    '.git',
   },
   capabilities = capabilities,
 
@@ -125,18 +125,24 @@ return {
     -- Function to switch between source file and header
     --- @diagnostic disable param-type-mismatch
     local function switch_source_header()
-      local method_name = "textDocument/switchSourceHeader"
+      local method_name = 'textDocument/switchSourceHeader'
       if not client:supports_method(method_name) then
-        return vim.notify(("Method %s is not supported by current server"):format(method_name), vim.log.levels.WARN)
+        return vim.notify(
+          ('Method %s is not supported by current server'):format(method_name),
+          vim.log.levels.WARN
+        )
       end
 
       local params = vim.lsp.util.make_text_document_params(bufnr)
       client:request(method_name, params, function(err, result)
         if err then
-          return vim.notify("Error switching source/header: " .. tostring(err), vim.log.levels.ERROR)
+          return vim.notify(
+            'Error switching source/header: ' .. tostring(err),
+            vim.log.levels.ERROR
+          )
         end
         if not result then
-          return vim.notify("Corresponding file cannot be determined", vim.log.levels.INFO)
+          return vim.notify('Corresponding file cannot be determined', vim.log.levels.INFO)
         end
         vim.cmd.edit(vim.uri_to_fname(result))
       end, bufnr)
@@ -144,41 +150,49 @@ return {
 
     -- Function to show symbol info
     local function symbol_info()
-      local method_name = "textDocument/symbolInfo"
+      local method_name = 'textDocument/symbolInfo'
       if not client:supports_method(method_name) then
-        return vim.notify("Clangd client not found or doesn't support symbolInfo", vim.log.levels.ERROR)
+        return vim.notify(
+          "Clangd client not found or doesn't support symbolInfo",
+          vim.log.levels.ERROR
+        )
       end
 
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding) -- 0 for current win
       client:request(method_name, params, function(err, res)
         if err or not res or #res == 0 then
-          return vim.notify("No symbol info available", vim.log.levels.INFO)
+          return vim.notify('No symbol info available', vim.log.levels.INFO)
         end
 
-        local container = string.format("container: %s", res[1].containerName or "global")
-        local name = string.format("name: %s", res[1].name)
+        local container = string.format('container: %s', res[1].containerName or 'global')
+        local name = string.format('name: %s', res[1].name)
 
-        vim.lsp.util.open_floating_preview({ name, container }, "markdown", {
+        vim.lsp.util.open_floating_preview({ name, container }, 'markdown', {
           focusable = false,
           focus = false,
-          title = "Symbol Info",
+          title = 'Symbol Info',
         })
       end, bufnr)
     end
     --- @diagnostic enable param-type-mismatch
 
     -- Create User Commands
-    vim.api.nvim_buf_create_user_command(bufnr, "ClangdSwitchSourceHeader", function()
+    vim.api.nvim_buf_create_user_command(bufnr, 'ClangdSwitchSourceHeader', function()
       switch_source_header()
-    end, { desc = "Switch between source/header" })
+    end, { desc = 'Switch between source/header' })
 
-    vim.api.nvim_buf_create_user_command(bufnr, "ClangdShowSymbolInfo", function()
+    vim.api.nvim_buf_create_user_command(bufnr, 'ClangdShowSymbolInfo', function()
       symbol_info()
-    end, { desc = "Show symbol info" })
+    end, { desc = 'Show symbol info' })
 
     if has_cmakelists(client.config.root_dir) then
       -- Replace the command originally mapped to <F5> from runner.lua with the cmake-tools command.
-      vim.keymap.set("n", "<F5>", "<cmd>CMakeRun<cr>", { buffer = bufnr, silent = true, desc = "Run CMake Target" })
+      vim.keymap.set(
+        'n',
+        '<F5>',
+        '<cmd>CMakeRun<cr>',
+        { buffer = bufnr, silent = true, desc = 'Run CMake Target' }
+      )
     end
   end,
 }

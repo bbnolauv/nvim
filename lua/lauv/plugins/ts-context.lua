@@ -1,5 +1,5 @@
 return {
-  "nvim-treesitter/nvim-treesitter-context",
-  event = "VeryLazy",
+  'nvim-treesitter/nvim-treesitter-context',
+  event = 'VeryLazy',
   opts = {},
 }

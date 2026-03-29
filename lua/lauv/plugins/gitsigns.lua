@@ -1,9 +1,9 @@
 return {
-  "lewis6991/gitsigns.nvim",
-  event = "VeryLazy",
+  'lewis6991/gitsigns.nvim',
+  event = 'VeryLazy',
   opts = {
     on_attach = function(buffer)
-      local gs = require("gitsigns")
+      local gs = require('gitsigns')
 
       local function map(mode, l, r, desc)
         vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })

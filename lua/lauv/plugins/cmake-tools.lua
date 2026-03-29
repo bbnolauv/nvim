@@ -1,18 +1,18 @@
 return {
-  "Civitasv/cmake-tools.nvim",
+  'Civitasv/cmake-tools.nvim',
   lazy = true,
   -- dependencies = { "nvim-lua/plenary.nvim" },
   init = function()
     local loaded = false
     local function check()
       local cwd = vim.uv.cwd()
-      if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
-        require("lazy").load({ plugins = { "cmake-tools.nvim" } })
+      if vim.fn.filereadable(cwd .. '/CMakeLists.txt') == 1 then
+        require('lazy').load({ plugins = { 'cmake-tools.nvim' } })
         loaded = true
       end
     end
     check()
-    vim.api.nvim_create_autocmd("DirChanged", {
+    vim.api.nvim_create_autocmd('DirChanged', {
       callback = function()
         if not loaded then
           check()
@@ -21,24 +21,24 @@ return {
     })
   end,
   opts = {
-    cmake_generate_options = { "-GNinja", "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
-    cmake_build_directory = "build",
+    cmake_generate_options = { '-GNinja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=1' }, -- this will be passed when invoke `CMakeGenerate`
+    cmake_build_directory = 'build',
     -- cmake_soft_link_compile_commands = false,
     cmake_compile_commands_options = {
-      action = "none",
+      action = 'none',
     },
 
     cmake_executor = {
-      name = "quickfix",
+      name = 'quickfix',
       opts = {
-        position = "botright",
-        show = "always",
+        position = 'botright',
+        show = 'always',
       },
     },
     cmake_runner = {
-      name = "toggleterm",
+      name = 'toggleterm',
       opts = {
-        direction = "vertical",
+        direction = 'vertical',
         close_on_exit = false,
         auto_scroll = true,
         singleton = true,
@@ -47,7 +47,7 @@ return {
     cmake_notifications = {
       runner = { enabled = true },
       executor = { enabled = true },
-      spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }, -- icons used for progress display
+      spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }, -- icons used for progress display
       refresh_rate_ms = 100, -- how often to iterate icons
     },
     cmake_virtual_text_support = false, -- Show the target related to current file using virtual text (at right corner)

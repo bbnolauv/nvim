@@ -1,11 +1,11 @@
 return {
-  "saghen/blink.cmp",
+  'saghen/blink.cmp',
   -- optional: provides snippets for the snippet source
   -- cond = false,
-  dependencies = "rafamadriz/friendly-snippets",
-  event = { "InsertEnter", "CmdlineEnter" },
+  dependencies = 'rafamadriz/friendly-snippets',
+  event = { 'InsertEnter', 'CmdlineEnter' },
   -- use a release tag to download pre-built binaries
-  version = "*",
+  version = '*',
   -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
   -- build = 'cargo build --release',
   -- If you use nix, you can build from source using latest nightly rust with:
@@ -15,16 +15,16 @@ return {
   ---@type blink.cmp.Config
   opts = {
     keymap = {
-      preset = "enter",
+      preset = 'enter',
     },
     appearance = {
       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
-      nerd_font_variant = "mono",
+      nerd_font_variant = 'mono',
     },
     completion = {
       menu = {
-        border = "rounded",
+        border = 'rounded',
         -- draw = {
         -- columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "source_name" } },
         -- },
@@ -32,7 +32,7 @@ return {
     },
     cmdline = {
       keymap = {
-        ["<Tab>"] = { "accept" },
+        ['<Tab>'] = { 'accept' },
       },
       -- (optionally) automatically show the menu
       completion = { menu = { auto_show = true } },
@@ -40,8 +40,8 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
   },
-  opts_extend = { "sources.default" },
+  opts_extend = { 'sources.default' },
 }
