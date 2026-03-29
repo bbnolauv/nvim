@@ -7,5 +7,12 @@ return {
     disable_mouse = false,
     max_count = 5,
     restriction_mode = "hint",
+    disabled_keys = {
+      ["<Up>"] = false,
+      ["<Down>"] = false,
+      ["<Left>"] = false,
+      ["<Right>"] = false,
+      ["<Space>"] = { "n", "x" }, -- Disable <Space> key in normal and visual mode
+    },
   },
 }
