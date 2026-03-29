@@ -41,18 +41,18 @@ local function keymap_on_attach(bufnr)
 
   -- Diagnostics
   vim.keymap.set("n", "go", vim.diagnostic.open_float, opts)
-  vim.keymap.set("n", "[d", function() -- previous
-    vim.diagnostic.jump({ count = -vim.v.count1 })
-  end, opts)
-  vim.keymap.set("n", "]d", function() -- next
-    vim.diagnostic.jump({ count = vim.v.count1 })
-  end, opts)
-  vim.keymap.set("n", "[D", function() -- first
-    vim.diagnostic.jump({ -9999, wrap = false })
-  end)
-  vim.keymap.set("n", "]D", function() -- last
-    vim.diagnostic.jump({ 9999, wrap = false })
-  end)
+  -- vim.keymap.set("n", "[d", function() -- previous
+  --   vim.diagnostic.jump({ count = -vim.v.count1 })
+  -- end, opts)
+  -- vim.keymap.set("n", "]d", function() -- next
+  --   vim.diagnostic.jump({ count = vim.v.count1 })
+  -- end, opts)
+  -- vim.keymap.set("n", "[D", function() -- first
+  --   vim.diagnostic.jump({ -9999, wrap = false })
+  -- end)
+  -- vim.keymap.set("n", "]D", function() -- last
+  --   vim.diagnostic.jump({ 9999, wrap = false })
+  -- end)
   vim.keymap.set("n", "[e", function() -- previous error
     vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR })
   end, opts)
@@ -64,10 +64,22 @@ end
 local function capabilities_on_attach(client, bufnr)
   if client:supports_method("textDocument/inlayHint") then
     vim.lsp.inlay_hint.enable(true)
+    -- Toggle inlay_hint
+    vim.keymap.set("n", "\\ih", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { buffer = bufnr })
   end
 
-  if vim.fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
-    vim.lsp.document_color.enable(true, bufnr, { style = "virtual" })
+  if client:supports_method("textDocument/codeLens") then
+    vim.lsp.codelens.enable()
+    -- Toggle codelens
+    vim.keymap.set("n", "\\cl", function()
+      vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+    end, { buffer = bufnr })
+  end
+
+  if vim.fn.has('nvim-0.12') == 1 and client:supports_method('textDocument/documentColor') then
+    vim.lsp.document_color.enable(true, { bufnr = bufnr }, { style = 'virtual' })
   end
 
   -- Document highlight
