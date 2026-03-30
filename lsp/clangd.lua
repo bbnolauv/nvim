@@ -31,6 +31,9 @@ local function has_cmakelists(root_dir)
   return vim.uv.fs_stat(vim.fs.joinpath(root_dir, 'CMakeLists.txt')) ~= nil
 end
 
+local function clangd_notify(msg, level)
+  return vim.notify(msg, level, { title = 'Clangd' })
+end
 -- Check if compile_commands.json needs to be generated based on age/existence.
 local function should_generate_commands(root_dir, CONFIG)
   if not root_dir then
@@ -56,25 +59,25 @@ end
 -- Core logic to generate compile_commands.json using cmake-tools
 local function generate_compile_commands(root_dir)
   if not has_cmakelists(root_dir) then
-    return vim.notify('CMakeLists.txt not found, skipping generation', vim.log.levels.WARN)
+    clangd_notify('CMakeLists.txt not found, skipping generation', vim.log.levels.WARN)
   end
 
   if vim.fn.executable('cmake') ~= 1 then
-    return vim.notify('CMake executable not found, skipping generation', vim.log.levels.WARN)
+    clangd_notify('CMake executable not found, skipping generation', vim.log.levels.WARN)
   end
 
   local ok, cmake_tools = pcall(require, 'cmake-tools')
   if not ok then
-    return vim.notify('cmake-tools.nvim not found, skipping generation', vim.log.levels.WARN)
+    clangd_notify('cmake-tools.nvim not found, skipping generation', vim.log.levels.WARN)
   end
 
-  vim.notify('[LSP] Generating compilation database...', vim.log.levels.INFO)
+  clangd_notify('[LSP] Generating compilation database...', vim.log.levels.INFO)
   --- @diagnostic disable-next-line: need-check-nil
   cmake_tools.generate({}, function(result)
     if result:is_ok() then
-      vim.notify('[LSP] Compilation database generated.', vim.log.levels.INFO)
+      clangd_notify('[LSP] Compilation database generated.', vim.log.levels.INFO)
     else
-      vim.notify('[LSP] CMake generation failed.', vim.log.levels.ERROR)
+      clangd_notify('[LSP] CMake generation failed.', vim.log.levels.ERROR)
     end
   end)
 end
@@ -127,7 +130,7 @@ return {
     local function switch_source_header()
       local method_name = 'textDocument/switchSourceHeader'
       if not client:supports_method(method_name) then
-        return vim.notify(
+        clangd_notify(
           ('Method %s is not supported by current server'):format(method_name),
           vim.log.levels.WARN
         )
@@ -136,13 +139,10 @@ return {
       local params = vim.lsp.util.make_text_document_params(bufnr)
       client:request(method_name, params, function(err, result)
         if err then
-          return vim.notify(
-            'Error switching source/header: ' .. tostring(err),
-            vim.log.levels.ERROR
-          )
+          clangd_notify('Error switching source/header: ' .. tostring(err), vim.log.levels.ERROR)
         end
         if not result then
-          return vim.notify('Corresponding file cannot be determined', vim.log.levels.INFO)
+          clangd_notify('Corresponding file cannot be determined', vim.log.levels.INFO)
         end
         vim.cmd.edit(vim.uri_to_fname(result))
       end, bufnr)
@@ -152,16 +152,13 @@ return {
     local function symbol_info()
       local method_name = 'textDocument/symbolInfo'
       if not client:supports_method(method_name) then
-        return vim.notify(
-          "Clangd client not found or doesn't support symbolInfo",
-          vim.log.levels.ERROR
-        )
+        clangd_notify("Clangd client not found or doesn't support symbolInfo", vim.log.levels.ERROR)
       end
 
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding) -- 0 for current win
       client:request(method_name, params, function(err, res)
         if err or not res or #res == 0 then
-          return vim.notify('No symbol info available', vim.log.levels.INFO)
+          clangd_notify('No symbol info available', vim.log.levels.INFO)
         end
 
         local container = string.format('container: %s', res[1].containerName or 'global')
