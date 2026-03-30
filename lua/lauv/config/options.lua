@@ -1,22 +1,22 @@
 local o = vim.o
-o.cinoptions = 'j1,(0,ws,Ws,g0'
 o.conceallevel = 2
 o.cursorline = true
 o.cursorlineopt = 'number'
 o.expandtab = true
-o.foldcolumn = '1'
-o.foldenable = true
-o.foldlevel = 99
-o.foldlevelstart = 99
 o.fillchars = 'eob: ,diff:╱,foldopen:,foldclose:,foldsep:▕,foldinner:▕,'
+o.foldcolumn = 'auto'
+o.foldenable = true
+o.foldlevelstart = 99
 o.laststatus = 3
 o.list = true
 o.listchars = 'tab:» ,nbsp:+,trail:·,extends:→,precedes:←,leadmultispace:| ,'
 o.mouse = 'a'
 o.number = true
+o.pumborder = 'rounded'
 o.relativenumber = true
 o.scrolloff = 4
 o.shiftwidth = 2
+o.shortmess = 'aItToOCF'
 o.showbreak = '↪'
 -- o.showcmdloc = 'statusline'
 o.showmode = false
@@ -24,10 +24,10 @@ o.sidescrolloff = 4
 o.signcolumn = 'yes'
 o.smoothscroll = true
 o.softtabstop = 0
-o.switchbuf = 'useopen'
+o.switchbuf = 'useopen,usetab,uselast'
 o.tabstop = 2
-o.winborder = 'rounded'
 -- o.undofile = true
+o.winborder = 'rounded'
 
 -- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
 if os.getenv('SSH_TTY') == nil then
@@ -110,27 +110,25 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
--- don't extend the stupid comments:
-vim.api.nvim_create_autocmd('BufEnter', {
-  group = augroup('disable_formatoptions_cro'),
-  pattern = '*',
-  callback = function()
-    vim.opt_local.formatoptions:remove('c')
-    vim.opt_local.formatoptions:remove('r')
-    vim.opt_local.formatoptions:remove('o')
-  end,
-})
-
--- -- smart number
--- vim.api.nvim_create_autocmd("InsertEnter", {
---   group = augroup("smart_number1"),
+-- -- don't extend the stupid comments:
+-- vim.api.nvim_create_autocmd('BufEnter', {
+--   group = augroup('disable_formatoptions_cro'),
+--   pattern = '*',
 --   callback = function()
---     vim.opt_local.relativenumber = false
+--     vim.opt.formatoptions:remove({ 'c', 'r', 'o' })
 --   end,
 -- })
--- vim.api.nvim_create_autocmd("InsertLeave", {
---   group = augroup("smart_number2"),
+
+-- -- smart number
+-- vim.api.nvim_create_autocmd('InsertEnter', {
+--   group = augroup('smart_number1'),
 --   callback = function()
---     vim.opt_local.relativenumber = true
+--     vim.wo.relativenumber = false
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd('InsertLeave', {
+--   group = augroup('smart_number2'),
+--   callback = function()
+--     vim.wo.relativenumber = true
 --   end,
 -- })
