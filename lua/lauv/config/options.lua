@@ -1,55 +1,38 @@
-local option_table = {
-  cinoptions = 'j1,(0,ws,Ws,g0',
-  conceallevel = 2,
-  cursorline = true,
-  cursorlineopt = 'number',
-  expandtab = true,
-  foldcolumn = '1',
-  foldenable = true,
-  foldlevel = 99,
-  foldlevelstart = 99,
-  fillchars = {
-    eob = ' ',
-    diff = '╱',
-    foldopen = '',
-    foldclose = '',
-    foldsep = '▕',
-    foldinner = '▕',
-  },
-  laststatus = 3,
-  list = true,
-  listchars = {
-    extends = '❯',
-    leadmultispace = '| ',
-    precedes = '❮',
-    tab = '▸ ',
-    trail = '⋅',
-  },
-  mouse = 'a',
-  number = true,
-  relativenumber = true,
-  scrolloff = 4,
-  shiftwidth = 2,
-  showbreak = '↪',
-  -- showcmdloc = "statusline",
-  showmode = false,
-  sidescrolloff = 4,
-  signcolumn = 'yes',
-  softtabstop = 0,
-  switchbuf = 'useopen',
-  tabstop = 2,
-  winborder = 'rounded',
-  -- undofile = true,
-}
-
-for k, v in pairs(option_table) do
-  vim.opt[k] = v
-end
+local o = vim.o
+o.cinoptions = 'j1,(0,ws,Ws,g0'
+o.conceallevel = 2
+o.cursorline = true
+o.cursorlineopt = 'number'
+o.expandtab = true
+o.foldcolumn = '1'
+o.foldenable = true
+o.foldlevel = 99
+o.foldlevelstart = 99
+o.fillchars = 'eob: ,diff:╱,foldopen:,foldclose:,foldsep:▕,foldinner:▕,'
+o.laststatus = 3
+o.list = true
+o.listchars = 'tab:» ,nbsp:+,trail:·,extends:→,precedes:←,leadmultispace:| ,'
+o.mouse = 'a'
+o.number = true
+o.relativenumber = true
+o.scrolloff = 4
+o.shiftwidth = 2
+o.showbreak = '↪'
+-- o.showcmdloc = 'statusline'
+o.showmode = false
+o.sidescrolloff = 4
+o.signcolumn = 'yes'
+o.smoothscroll = true
+o.softtabstop = 0
+o.switchbuf = 'useopen'
+o.tabstop = 2
+o.winborder = 'rounded'
+-- o.undofile = true
 
 -- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
 if os.getenv('SSH_TTY') == nil then
   --Current env is local, include WSL
-  vim.opt.clipboard:append('unnamedplus')
+  o.clipboard = 'unnamedplus'
 else
   -- Issue of windows terminal, check link below:
   -- https://github.com/microsoft/terminal/issues/17735
@@ -65,11 +48,6 @@ else
     },
   }
 end
-
-if vim.fn.has('nvim-0.10') == 1 then
-  vim.opt.smoothscroll = true
-end
-
 local function augroup(name)
   return vim.api.nvim_create_augroup('lauvvim_' .. name, { clear = true })
 end
@@ -78,7 +56,7 @@ end
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = augroup('checktime'),
   callback = function()
-    if vim.o.buftype ~= 'nofile' then
+    if o.buftype ~= 'nofile' then
       vim.cmd('checktime')
     end
   end,
