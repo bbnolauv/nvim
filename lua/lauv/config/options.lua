@@ -29,25 +29,6 @@ o.tabstop = 2
 -- o.undofile = true
 o.winborder = 'rounded'
 
--- check link `https://www.cnblogs.com/sxrhhh/p/18234652/neovim-copy-anywhere`
-if os.getenv('SSH_TTY') == nil then
-  --Current env is local, include WSL
-  o.clipboard = 'unnamedplus'
-else
-  -- Issue of windows terminal, check link below:
-  -- https://github.com/microsoft/terminal/issues/17735
-  vim.g.clipboard = {
-    name = 'OSC 52',
-    copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-    },
-    paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-    },
-  }
-end
 local function augroup(name)
   return vim.api.nvim_create_augroup('lauvvim_' .. name, { clear = true })
 end
