@@ -12,7 +12,6 @@ return {
       ['<Down>'] = false,
       ['<Left>'] = false,
       ['<Right>'] = false,
-      ['<Space>'] = { 'n', 'x' }, -- Disable <Space> key in normal and visual mode
     },
   },
 }

@@ -21,6 +21,7 @@ vim.keymap.set('c', '<M-b>', '<S-Left>')
 vim.keymap.set('c', '<M-f>', '<S-Right>')
 
 vim.keymap.set('n', 'q:', '<Nop>', { desc = ':h c_CTRL-F' })
+vim.keymap.set({ 'n', 'x' }, '<Leader>', '<Nop>')
 vim.o.cedit = '<C-o>'
 
 vim.keymap.set({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'system clipboard support' })
