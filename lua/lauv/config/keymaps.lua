@@ -9,6 +9,7 @@ if vim.fn.has('nvim-0.11') == 1 then
   vim.keymap.del('n', 'grt')
 end
 
+-- Emacs style cmdline
 vim.keymap.set('c', '<C-p>', '<Up>')
 vim.keymap.set('c', '<C-n>', '<Down>')
 vim.keymap.set('c', '<C-b>', '<Left>')
@@ -20,9 +21,16 @@ vim.keymap.set('c', '<C-d>', '<Del>')
 vim.keymap.set('c', '<M-b>', '<S-Left>')
 vim.keymap.set('c', '<M-f>', '<S-Right>')
 
-vim.keymap.set('n', 'q:', '<Nop>', { desc = ':h c_CTRL-F' })
 vim.keymap.set({ 'n', 'x' }, '<Leader>', '<Nop>')
+
+vim.keymap.set('x', 'x', '"_d', { desc = 'use blackhole register for non-copy' }) -- for copy and delete use v_d
+vim.keymap.set('n', 'z=', '<Cmd>setlocal spell<CR>z=')
+
+-- :h c_CTRL-F
 vim.o.cedit = '<C-o>'
+vim.keymap.set({ 'n', 'x' }, 'q', '<Nop>')
+vim.keymap.set({ 'n', 'x' }, '<leader>q', 'q')
+-- vim.keymap.set('n', 'q;', 'q:')
 
 vim.keymap.set({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'system clipboard support' })
 
@@ -124,5 +132,3 @@ vim.keymap.set('x', 'g??', function()
   vim.ui.open(('https://google.com/search?q=%s'):format(vim.trim(table.concat(region, ' '))))
   vim.api.nvim_input('<esc>')
 end)
-
-vim.keymap.set('x', 'x', '"_d') -- for copy and delete use v_d

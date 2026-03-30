@@ -16,7 +16,7 @@ return {
     { "<leader>fz", function() FzfLua.zoxide() end,               desc = "FzfLua zoxide", },
 
     { "<leader>f/", function() FzfLua.search_history() end,       desc = "FzfLua search_history", },
-    { "<leader>f:", function() FzfLua.command_history() end,      desc = "FzfLua command_history", },
+    { "<leader>f;", function() FzfLua.command_history() end,      desc = "FzfLua command_history", },
 
     { "<leader>fl", ":FzfLua ",                                   desc = "Populate command line with ':FzfLua '" },
   },
