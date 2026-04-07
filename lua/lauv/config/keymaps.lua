@@ -66,8 +66,7 @@ vim.keymap.set('n', '<Right>', '<c-w>l')
 ---@type Utils.runner
 local UtilRunner = require('lauv.utils.runner')
 
-vim.keymap.set('n', '<F5>', UtilRunner.build_and_run)
-vim.keymap.set('n', '<F6>', UtilRunner.run)
+vim.keymap.set('n', '<F5>', UtilRunner.run_single_file)
 vim.keymap.set('n', '<leader>gg', UtilRunner.lazygit)
 
 vim.api.nvim_create_user_command('Diagnostics', function(opts)

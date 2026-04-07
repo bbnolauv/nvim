@@ -1,32 +1,11 @@
--- -----------------------------------------------------------
--- Module definition and configuration
--- -----------------------------------------------------------
 ---@class Utils.runner
 local M = {}
 
-M.config = {
-  build_dir = 'build',
-  build_gen = 'Ninja',
+local CONFIG = {
   default_build_options = '-std=c++20',
   tmp_dir = vim.uv.os_uname().sysname == 'Windows_NT' and os.getenv('TMP') or '/tmp',
 }
 
--- -----------------------------------------------------------
--- Helper functions
--- -----------------------------------------------------------
-
---- Match project name from CMakeLists.txt
-local function get_target_name()
-  local cmakelists_path = vim.fn.fnamemodify(vim.fn.expand('%:p'), ':h') .. '/CMakeLists.txt'
-  if vim.fn.filereadable(cmakelists_path) == 0 then
-    return nil
-  end
-  local content = table.concat(vim.fn.readfile(cmakelists_path), '\n')
-  local target = string.match(content, 'add_executable%(([^%s)]+)')
-  return target
-end
-
---- Execute a command in the terminal
 local function run_in_terminal(cmd, close_on_exit)
   if not cmd or cmd == '' then
     vim.notify('No matching file format or command found', vim.log.levels.ERROR)
@@ -41,110 +20,62 @@ local function run_in_terminal(cmd, close_on_exit)
     :toggle()
 end
 
--- -----------------------------------------------------------
--- Public API (for keybindings)
--- -----------------------------------------------------------
-
---- Compile and run
-function M.build_and_run()
-  vim.api.nvim_command('write')
-
-  local ft = vim.bo.filetype
-  -- local fname = vim.fn.expand("%:t")
-  local fpath = vim.fn.expand('%:p:h')
-  local fname_abs = vim.fn.expand('%:p')
-  local fname_no_ext = vim.fn.expand('%:t:r')
+local function single_file_binary_path()
+  local run_target = 'run_' .. vim.fn.expand('%:t:r')
   local platform = vim.uv.os_uname().sysname
-  local cmd = ''
 
-  if ft == 'python' then
-    cmd = ('uv run %s'):format(fname_abs)
-  elseif ft == 'c' or ft == 'cpp' or ft == 'cmake' then
-    local target = get_target_name()
-    if target then
-      -- CMake project
-      local run_path = ('%s/%s'):format(M.config.build_dir, target)
-      local cmake_build_cmd = ('cmake --build %s --target %s'):format(M.config.build_dir, target)
-      local cmake_configure_cmd = ''
-      if vim.fn.isdirectory(M.config.build_dir) == 0 then
-        cmake_configure_cmd = ('cmake -S %s -B %s -G %s -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON && '):format(
-          fpath,
-          M.config.build_dir,
-          M.config.build_gen
-        )
-      end
-      cmd = cmake_configure_cmd .. cmake_build_cmd .. ' && ' .. run_path
-    else
-      -- Compile single file
-      local run_target = 'run_' .. fname_no_ext
-      local run_path = ''
-
-      if platform == 'Windows_NT' then
-        run_path = M.config.tmp_dir .. '\\' .. run_target .. '.exe'
-        cmd = ('g++ %s -o %s %s && %s'):format(
-          M.config.default_build_options,
-          run_path,
-          fname_abs,
-          run_path
-        )
-      elseif platform == 'Linux' then
-        run_path = M.config.tmp_dir .. '/' .. run_target
-        cmd = ('g++ %s -o %s %s && %s'):format(
-          M.config.default_build_options,
-          run_path,
-          fname_abs,
-          run_path
-        )
-      end
-    end
-  -- elseif ft == "markdown" then
-  --   vim.api.nvim_command("MarkdownPreview")
-  --   return
-  elseif ft == 'yacc' then
-    cmd = 'bison ' .. fname_abs
+  if platform == 'Windows_NT' then
+    return CONFIG.tmp_dir .. '\\' .. run_target .. '.exe'
   end
 
-  run_in_terminal(cmd)
+  return CONFIG.tmp_dir .. '/' .. run_target
 end
 
---- Only run
-function M.run()
+local function single_file_command()
   local ft = vim.bo.filetype
-  local cmd = ''
+  local file_path = vim.fn.expand('%:p')
 
   if ft == 'python' then
-    cmd = ('uv run %s'):format(vim.fn.expand('%:p'))
-  elseif ft == 'c' or ft == 'cpp' or ft == 'cmake' then
-    local target = get_target_name()
-    if target then
-      cmd = ('%s/%s'):format(M.config.build_dir, target)
-    else
-      local run_target = 'run_' .. vim.fn.expand('%:t:r')
-      local platform = vim.uv.os_uname().sysname
-      if platform == 'Windows_NT' then
-        cmd = M.config.tmp_dir .. '\\' .. run_target .. '.exe'
-      elseif platform == 'Linux' then
-        cmd = M.config.tmp_dir .. '/' .. run_target
-      end
-    end
-  else
-    vim.notify('Running not supported for current file type ', vim.log.levels.WARN)
+    return ('uv run %s'):format(file_path)
+  end
+
+  if ft == 'c' or ft == 'cpp' then
+    local binary_path = single_file_binary_path()
+    return ('g++ %s -o %s %s && %s'):format(
+      CONFIG.default_build_options,
+      binary_path,
+      file_path,
+      binary_path
+    )
+  end
+
+  if ft == 'yacc' then
+    return ('bison %s'):format(file_path)
+  end
+end
+
+function M.run_single_file()
+  vim.cmd.write()
+
+  local cmd = single_file_command()
+  if not cmd then
+    vim.notify('Running not supported for current file type', vim.log.levels.WARN)
     return
   end
 
   run_in_terminal(cmd)
 end
 
-local _lazygit_term = nil
+local lazygit_term = nil
 
 function M.lazygit()
   if vim.fn.executable('lazygit') ~= 1 then
     vim.notify('lazygit not found. Please install it first.', vim.log.levels.ERROR)
     return
   end
-  if not _lazygit_term then
+  if not lazygit_term then
     local Terminal = require('toggleterm.terminal').Terminal
-    _lazygit_term = Terminal:new({
+    lazygit_term = Terminal:new({
       cmd = 'lazygit',
       direction = 'float',
       close_on_exit = true,
@@ -152,7 +83,7 @@ function M.lazygit()
         height = math.floor(vim.o.lines * 0.9),
       },
       on_exit = function()
-        _lazygit_term = nil
+        lazygit_term = nil
       end,
       on_open = function(term)
         vim.keymap.set('t', '<c-h>', function()
@@ -162,9 +93,7 @@ function M.lazygit()
     })
   end
 
-  if _lazygit_term then
-    _lazygit_term:toggle()
-  end
+  lazygit_term:toggle()
 end
 
 return M
