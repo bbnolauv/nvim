@@ -17,23 +17,7 @@ return {
     end,
   },
   {
-    'Kicamon/im-switch.nvim',
-    cond = false,
+    'h-hg/fcitx.nvim',
     ft = { 'markdown' },
-    opts = {
-      text = { -- Documents that automatically switch input method
-        '*.md',
-        '*.txt',
-      },
-      -- code = { -- Languages that automatically switch input method for code comments
-      --     "*.lua",
-      --     "*.c",
-      --     "*.cpp",
-      --     "*.py",
-      -- },
-      en = 'fcitx5-remote -c',
-      zh = 'fcitx5-remote -o',
-      check = 'fcitx5-remote',
-    },
   },
 }
