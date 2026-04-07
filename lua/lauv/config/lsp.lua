@@ -115,11 +115,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Enable LSP servers
-local lsp_configs = {}
-for _, v in ipairs(vim.api.nvim_get_runtime_file('lsp/*.lua', true)) do
-  local name = vim.fn.fnamemodify(v, ':t:r')
-  lsp_configs[name] = true
-end
-
-vim.lsp.enable(vim.tbl_keys(lsp_configs))
+vim.lsp.enable({
+  'clangd',
+  'emmylua_ls',
+  'gopls',
+})
