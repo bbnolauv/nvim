@@ -71,15 +71,22 @@ local function capabilities_on_attach(client, bufnr)
   end
 
   if client:supports_method('textDocument/codeLens') then
-    vim.lsp.codelens.enable()
     -- Toggle codelens
     vim.keymap.set('n', '\\cl', function()
       vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
     end, { buffer = bufnr })
   end
 
-  if vim.fn.has('nvim-0.12') == 1 and client:supports_method('textDocument/documentColor') then
-    vim.lsp.document_color.enable(true, { bufnr = bufnr }, { style = 'virtual' })
+  if client:supports_method('textDocument/documentColor') then
+    vim.lsp.document_color.enable(false)
+    -- Toggle document_color
+    vim.keymap.set('n', '\\dc', function()
+      vim.lsp.document_color.enable(
+        not vim.lsp.document_color.is_enabled(),
+        nil,
+        { style = 'virtual' }
+      )
+    end, { buffer = bufnr })
   end
 
   -- Document highlight
