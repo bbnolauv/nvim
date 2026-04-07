@@ -24,7 +24,11 @@ vim.keymap.set('c', '<M-f>', '<S-Right>')
 vim.keymap.set({ 'n', 'x' }, '<Leader>', '<Nop>')
 
 vim.keymap.set('x', 'x', '"_d', { desc = 'use blackhole register for non-copy' }) -- for copy and delete use v_d
-vim.keymap.set('n', 'z=', '<Cmd>setlocal spell<CR>z=')
+vim.keymap.set('n', 'z=', function()
+  vim.bo.spelllang = 'en_us,cjk'
+  vim.wo.spell = true
+  vim.cmd('normal! z=')
+end)
 
 -- :h c_CTRL-F
 vim.o.cedit = '<C-o>'
