@@ -10,7 +10,6 @@
     "enables": [
       "iter-variable-reassign",
       "non-literal-expressions-in-assert",
-      "incomplete-signature-doc",
       "missing-global-doc"
     ]
   },
@@ -24,13 +23,15 @@
   "workspace": {
     "library": [
       "$VIMRUNTIME",
+      "$HOME/.config/nvim/lua",
       "$HOME/.local/share/nvim/lazy/lazy.nvim/lua",
       "$HOME/.local/share/nvim/lazy/blink.cmp/lua",
       "$HOME/.local/share/nvim/lazy/oil.nvim/lua",
       "$HOME/.local/share/nvim/lazy/flash.nvim/lua",
       "$HOME/.local/share/nvim/lazy/gitsigns.nvim/lua",
       "$HOME/.local/share/nvim/lazy/fzf-lua/lua",
-      "$HOME/.local/share/nvim/lazy/render-markdown.nvim/lua"
+      "$HOME/.local/share/nvim/lazy/render-markdown.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-lspconfig/"
     ]
   }
 }

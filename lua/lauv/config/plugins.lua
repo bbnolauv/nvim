@@ -16,15 +16,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  spec = {
-    { import = 'lauv.plugins.lib' },
-    { import = 'lauv.plugins' },
-  },
-  change_detection = {
-    notify = false,
-  },
-  ui = {
-    border = 'rounded',
-  },
-  --- @diagnostic disable-next-line: missing-parameter
+  { import = 'lauv.plugins.lib' },
+  { import = 'lauv.plugins' },
+}, {
+  change_detection = { notify = false },
+  ui = { border = 'rounded' },
 })

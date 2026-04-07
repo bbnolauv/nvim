@@ -10,7 +10,6 @@ return {
   },
   config = function(_, opts)
     require('notify').setup(opts)
-    --- @diagnostic disable-next-line: assign-type-mismatch
     vim.notify = require('notify')
   end,
 }
