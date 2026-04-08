@@ -123,6 +123,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.lsp.enable({
+  'basedpyright',
   'clangd',
   'emmylua_ls',
   'gopls',

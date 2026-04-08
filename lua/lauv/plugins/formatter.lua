@@ -7,6 +7,7 @@ return {
       lua = { 'stylua' },
       cpp = { 'clang-format' },
       json = { 'jq' },
+      python = { 'ruff_format' },
       -- Conform will run multiple formatters sequentially
       -- python = { "isort", "black" },
       -- Use a sub-list to run only the first available formatter
