@@ -13,6 +13,7 @@ return {
     PATH = 'skip',
   },
   init = function()
+    --- @diagnostic disable-next-line: param-type-mismatch
     local mason_bin = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'bin')
 
     if not vim.env.PATH:find(mason_bin, 1, true) then
