@@ -127,4 +127,5 @@ vim.lsp.enable({
   'clangd',
   'emmylua_ls',
   'gopls',
+  'jsonls',
 })

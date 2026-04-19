@@ -23,7 +23,7 @@ vim.keymap.set('c', '<M-f>', '<S-Right>')
 
 vim.keymap.set({ 'n', 'x' }, '<Leader>', '<Nop>')
 
-vim.keymap.set('x', 'x', '"_d', { desc = 'use blackhole register for non-copy' }) -- for copy and delete use v_d
+vim.keymap.set('x', 'd', '"_d', { desc = 'use blackhole register for non-copy' }) -- for copy and delete use v_x
 vim.keymap.set('n', 'z=', function()
   vim.bo.spelllang = 'en_us,cjk'
   vim.wo.spell = true
