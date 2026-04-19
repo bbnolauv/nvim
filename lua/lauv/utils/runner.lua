@@ -74,9 +74,19 @@ function M.lazygit()
     return
   end
   if not lazygit_term then
+    local path = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+    if not vim.uv.fs_stat(path) then
+      vim.print(path)
+      path = path:sub(7) -- for Oil buffer path oil://
+      vim.print(path)
+      if not vim.uv.fs_stat(path) then
+        return vim.notify('Not a valid path', vim.log.levels.ERROR, { title = 'lazygit' })
+      end
+    end
     local Terminal = require('toggleterm.terminal').Terminal
     lazygit_term = Terminal:new({
       cmd = 'lazygit',
+      dir = path,
       direction = 'float',
       close_on_exit = true,
       float_opts = {

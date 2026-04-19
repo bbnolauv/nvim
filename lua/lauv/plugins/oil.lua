@@ -1,6 +1,8 @@
 ---@type LazyPluginSpec
 return {
-  'stevearc/oil.nvim',
+  -- 'stevearc/oil.nvim',
+  'barrettruth/canola.nvim', -- community fork
+  name = 'oil.nvim',
   ---@module 'oil'
   ---@type oil.SetupOpts
   opts = {},
