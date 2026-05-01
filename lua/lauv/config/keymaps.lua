@@ -36,6 +36,33 @@ vim.keymap.set({ 'n', 'x' }, 'q', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, '<leader>q', 'q')
 -- vim.keymap.set('n', 'q;', 'q:')
 
+-- Argument list
+-- Reference: https://jkrl.me/vim/2025/05/28/nvim-arglist.html
+vim.keymap.set('n', '<Leader>al', '<C-l><Cmd>args<CR>', { desc = 'list files in arglist' })
+vim.keymap.set('n', '<Leader>ag', function()
+  local count = vim.v.count
+  local prefix = count > 0 and tostring(count) or ''
+  return ':<C-u>' .. prefix .. 'argu|args<CR><Esc>'
+end, { expr = true, desc = 'jump to the [count]th file, or the current one without [count]' })
+vim.keymap.set(
+  'n',
+  '<Leader>aa',
+  '<Cmd>$arge %<bar>argded<bar>args<CR>',
+  { desc = 'add current file to arglist' }
+)
+vim.keymap.set(
+  'n',
+  '<Leader>ad',
+  '<Cmd>argd %<bar>args<CR>',
+  { desc = 'delete current file from arglist' }
+)
+vim.keymap.set(
+  'n',
+  '<Leader>ac',
+  '<Cmd>%argd<CR><C-l>',
+  { desc = 'clear arglist (i.e., delete all)' }
+)
+
 vim.keymap.set({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'system clipboard support' })
 
 vim.keymap.set(

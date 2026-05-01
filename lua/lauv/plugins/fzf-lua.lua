@@ -5,6 +5,7 @@ return {
   cmd = 'FzfLua',
   -- stylua: ignore start
   keys = {
+    { "<leader>fa", function() FzfLua.args() end,                 desc = "FzfLua args", },
     { "<leader>fb", function() FzfLua.buffers() end,              desc = "FzfLua buffers", },
     { "<leader>ff", function() FzfLua.files() end,                desc = "FzfLua files", },
     { "<leader>fg", function() FzfLua.live_grep_native() end,     desc = "FzfLua grep", },

@@ -58,6 +58,16 @@ return {
       },
 
       lualine_x = { 'lsp_status', 'filetype' },
+      lualine_y = {
+        {
+          '%a',
+          padding = { left = 0, right = 1 },
+          cond = function()
+            return vim.fn.argc() > 1
+          end,
+        },
+        'progress',
+      },
       lualine_z = { { 'location', separator = { left = '', right = '' } } },
     },
   },
