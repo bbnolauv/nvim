@@ -20,11 +20,12 @@ require('lazy').setup({
     { import = 'lauv.plugins.lib' },
     { import = 'lauv.plugins' },
   },
-  change_detection = {
-    notify = false,
-  },
-  ui = {
-    border = 'rounded',
+  change_detection = { notify = false },
+  ui = { border = 'rounded' },
+  dev = {
+    path = '~/Downloads/repo/lazy_plugins',
+    -- patterns = { 'bbnolauv' },
+    fallback = false, -- Fallback to git when local plugin doesn't exist
   },
   --- @diagnostic disable-next-line: missing-parameter
 })
