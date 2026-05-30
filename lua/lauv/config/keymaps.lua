@@ -3,10 +3,11 @@ vim.g.mapleader = ' '
 
 if vim.fn.has('nvim-0.11') == 1 then
   vim.keymap.del('n', 'gri')
-  vim.keymap.del('n', 'gra')
+  vim.keymap.del({ 'n', 'x' }, 'gra')
   vim.keymap.del('n', 'grn')
   vim.keymap.del('n', 'grr')
   vim.keymap.del('n', 'grt')
+  vim.keymap.del('n', 'grx') -- 0.12 codelens
 end
 
 -- Emacs style cmdline
@@ -36,7 +37,8 @@ vim.keymap.set({ 'n', 'x' }, 'q', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, '<leader>q', 'q')
 -- vim.keymap.set('n', 'q;', 'q:')
 
-vim.keymap.set({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'system clipboard support' })
+vim.keymap.set({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+vim.keymap.set('n', '<leader>Y', '"+y$', { desc = 'Yank to end of line to system clipboard' })
 
 vim.keymap.set(
   { 'v', 'n' },
