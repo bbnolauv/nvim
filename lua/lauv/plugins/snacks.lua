@@ -1,3 +1,4 @@
+--- @diagnostic disable: missing-fields
 return {
   'folke/snacks.nvim',
   ---@type snacks.Config
@@ -5,8 +6,8 @@ return {
     -- your configuration comes here
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
-    -- bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    bigfile = { enabled = true },
+    -- dashboard = { enabled = true },
     -- indent = { enabled = true },
     input = { enabled = true },
     -- picker = { enabled = true },

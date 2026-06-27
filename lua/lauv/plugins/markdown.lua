@@ -18,6 +18,9 @@ return {
   },
   {
     'h-hg/fcitx.nvim',
+    enabled = function()
+      return vim.fn.executable('fcitx5-remote') == 1
+    end,
     ft = { 'markdown' },
   },
 }

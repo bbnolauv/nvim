@@ -10,6 +10,7 @@ o.foldlevelstart = 99
 o.laststatus = 3
 o.list = true
 o.listchars = 'tab:▸ ,nbsp:+,trail:·,extends:→,precedes:←,leadmultispace:| ,'
+-- o.modeline = false
 o.mouse = 'a'
 o.number = true
 o.pumborder = 'rounded'

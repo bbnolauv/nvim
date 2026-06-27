@@ -17,7 +17,7 @@ return {
     local mason_bin = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'bin')
 
     if not vim.env.PATH:find(mason_bin, 1, true) then
-      local sep = vim.fn.has('win32') == 1 and ';' or ':'
+      local sep = jit.os == 'Windows' and ';' or ':'
       vim.env.PATH = mason_bin .. sep .. vim.env.PATH
     end
   end,

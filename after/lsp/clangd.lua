@@ -38,11 +38,16 @@ end
 -- Core logic to generate compile_commands.json using cmake-tools
 local function generate_compile_commands(root_dir)
   if not has_cmakelists(root_dir) then
-    clangd_notify('CMakeLists.txt not found, skipping generation', vim.log.levels.WARN)
+    clangd_notify(
+      'CMakeLists.txt not found in [' .. root_dir .. '], skipping generation',
+      vim.log.levels.WARN
+    )
+    return
   end
 
   if vim.fn.executable('cmake') ~= 1 then
     clangd_notify('CMake executable not found, skipping generation', vim.log.levels.WARN)
+    return
   end
 
   clangd_notify('Generating compilation database...', vim.log.levels.INFO)
