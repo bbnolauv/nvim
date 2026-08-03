@@ -2,7 +2,8 @@ return {
   'folke/flash.nvim',
   ---@type Flash.Config|{}
   opts = {
-    highlight = { groups = { label = 'MatchParen' } },
+    -- catppuccin fixes flash.nvim's weird highlight
+    -- highlight = { groups = { label = 'MatchParen' } },
   },
   -- stylua: ignore
   keys = {
