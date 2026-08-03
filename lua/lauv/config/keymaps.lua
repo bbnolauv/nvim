@@ -137,3 +137,61 @@ vim.keymap.set('x', 'g??', function()
   vim.ui.open(('https://google.com/search?q=%s'):format(vim.trim(table.concat(region, ' '))))
   vim.api.nvim_input('<esc>')
 end)
+
+local UtilRepeat = require('lauv.utils.repeatable_move')
+
+vim.keymap.set({ 'n', 'x', 'o' }, ';', function()
+  UtilRepeat.repeat_last_move()
+end, { desc = 'Repeat last move' })
+vim.keymap.set({ 'n', 'x', 'o' }, ',', function()
+  UtilRepeat.repeat_last_move_opposite()
+end, { desc = 'Repeat last move opposite' })
+
+vim.keymap.set({ 'n', 'x', 'o' }, 'f', function()
+  return UtilRepeat.builtin_f_expr()
+end, { expr = true, desc = 'Move to next char' })
+vim.keymap.set({ 'n', 'x', 'o' }, 'F', function()
+  return UtilRepeat.builtin_F_expr()
+end, { expr = true, desc = 'Move to prev char' })
+vim.keymap.set({ 'n', 'x', 'o' }, 't', function()
+  return UtilRepeat.builtin_t_expr()
+end, { expr = true, desc = 'Move before next char' })
+vim.keymap.set({ 'n', 'x', 'o' }, 'T', function()
+  return UtilRepeat.builtin_T_expr()
+end, { expr = true, desc = 'Move before prev char' })
+
+local cnext, cprevious = UtilRepeat.make_repeatable_move_pair(function()
+  return pcall(function()
+    vim.cmd.cnext { count = vim.v.count1 }
+  end)
+end, function()
+  return pcall(function()
+    vim.cmd.cprevious { count = vim.v.count1 }
+  end)
+end)
+vim.keymap.set('n', ']q', cnext, { desc = 'Next quickfix' })
+vim.keymap.set('n', '[q', cprevious, { desc = 'Prev quickfix' })
+
+local bnext, bprevious = UtilRepeat.make_repeatable_move_pair(function()
+  return pcall(function()
+    vim.cmd.bnext { count = vim.v.count1 }
+  end)
+end, function()
+  return pcall(function()
+    vim.cmd.bprevious { count = vim.v.count1 }
+  end)
+end)
+vim.keymap.set('n', ']b', bnext, { desc = 'Next buffer' })
+vim.keymap.set('n', '[b', bprevious, { desc = 'Prev buffer' })
+
+local dnext, dprevious = UtilRepeat.make_repeatable_move_pair(function()
+  return pcall(function()
+    vim.cmd.normal { args = { ']c' }, bang = true }
+  end)
+end, function()
+  return pcall(function()
+    vim.cmd.normal { args = { '[c' }, bang = true }
+  end)
+end)
+vim.keymap.set('n', ']c', dnext, { desc = 'Next diff' })
+vim.keymap.set('n', '[c', dprevious, { desc = 'Prev diff' })

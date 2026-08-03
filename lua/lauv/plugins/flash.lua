@@ -1,9 +1,14 @@
 return {
   'folke/flash.nvim',
-  ---@type Flash.Config|{}
+  ---@type Flash.Config
   opts = {
     -- catppuccin fixes flash.nvim's weird highlight
     -- highlight = { groups = { label = 'MatchParen' } },
+    modes = {
+      --- @diagnostic disable-next-line: missing-fields
+      --- disable `f`, `F`, `t`, `T`, `;` and `,` motions
+      char = { enabled = false },
+    },
   },
   -- stylua: ignore
   keys = {
