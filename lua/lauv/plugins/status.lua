@@ -36,6 +36,10 @@ local custom_theme = {
   },
 }
 
+local function hide_in_width()
+  return vim.fn.winwidth(0) > 100
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   event = 'VeryLazy',
@@ -53,11 +57,14 @@ return {
       },
       lualine_b = {
         { 'branch', icon = '' },
-        'diff',
+        { 'diff', cond = hide_in_width },
         'diagnostics',
       },
 
-      lualine_x = { 'lsp_status', 'filetype' },
+      lualine_x = {
+        { 'lsp_status', cond = hide_in_width },
+        { 'filetype', cond = hide_in_width },
+      },
       lualine_z = { { 'location', separator = { left = '', right = '' } } },
     },
   },
