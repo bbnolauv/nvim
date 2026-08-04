@@ -99,19 +99,23 @@ vim.keymap.set('x', 'K', ":m '<-2<CR>gv=gv", { silent = true })
 
 vim.keymap.set('n', '<Leader><C-g>', function()
   local msg = {}
-  local isfile = vim.fn.empty(vim.fn.expand('%:p')) == 0
+  local file = vim.api.nvim_buf_get_name(0)
+  local isfile = file ~= ''
   -- Show file info
   local oldmsg = vim.trim(vim.fn.execute('norm! 2' .. vim.keycode('<C-g>')))
-  local mtime = isfile and vim.fn.strftime('%Y-%m-%d %H:%M', vim.fn.getftime(vim.fn.expand('%:p')))
-    or ''
-  table.insert(msg, { ('%s  %s\n'):format(oldmsg:sub(1), mtime) })
+  local stat = isfile and vim.uv.fs_stat(file) or nil
+  local mtime = stat and vim.fn.strftime('%Y-%m-%d %H:%M', stat.mtime.sec) or ''
+  table.insert(msg, { ('%s  %s\n'):format(oldmsg, mtime) })
   -- Show git branch
   local gitref = vim.fn.exists('*FugitiveHead') == 1 and vim.fn['FugitiveHead'](7) or nil
   if gitref then
     table.insert(msg, { ('branch: %s\n'):format(gitref) })
   end
   -- Show current directory
-  table.insert(msg, { ('cwd: %s\n'):format(vim.fn.fnamemodify(vim.fn.getcwd(), ':~')) })
+  table.insert(
+    msg,
+    { ('cwd: %s\n'):format(vim.fn.fnamemodify(vim.uv.cwd() or vim.fn.getcwd(), ':~')) }
+  )
   -- Show current session
   table.insert(msg, {
     ('session: %s\n'):format(
@@ -119,12 +123,13 @@ vim.keymap.set('n', '<Leader><C-g>', function()
     ),
   })
   -- Show process id
-  table.insert(msg, { ('PID: %s\n'):format(vim.fn.getpid()) })
+  table.insert(msg, { ('PID: %s\n'):format(vim.uv.os_getpid()) })
   -- Show current context
-  table.insert(msg, {
-    vim.fn.getline(vim.fn.search('\\v^[[:alpha:]$_]', 'bn', 1, 100)),
-    'Identifier',
-  })
+  -- (skip empty chunk: nvim_echo renders an empty chunk's line breaks as ^@)
+  local identifier = vim.fn.getline(vim.fn.search('\\v^[[:alpha:]$_]', 'bn', 1, 100))
+  if identifier ~= '' then
+    table.insert(msg, { identifier, 'Identifier' })
+  end
   vim.api.nvim_echo(msg, false, {})
 end, { desc = 'Enhanced Ctrl-G (borrowed from justinmk/config)' })
 
