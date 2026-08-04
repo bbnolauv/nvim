@@ -200,3 +200,26 @@ end, function()
 end)
 vim.keymap.set('n', ']c', dnext, { desc = 'Next diff' })
 vim.keymap.set('n', '[c', dprevious, { desc = 'Prev diff' })
+
+-- Toggle a fold view to preview search matching
+-- Source: https://vim.fandom.com/wiki/Folding_with_Regular_Expression
+vim.keymap.set('n', 'z/', function()
+  if vim.w.preview_search_matching then
+    local prev_opts = vim.w.preview_search_matching_prev_opts
+    vim.wo.foldmethod = prev_opts.foldmethod
+    vim.wo.foldexpr = prev_opts.foldexpr
+    vim.wo.foldlevel = prev_opts.foldlevel
+    vim.wo.foldcolumn = prev_opts.foldcolumn
+    vim.cmd.redraw()
+    vim.w.preview_search_matching = false
+  else
+    vim.w.preview_search_matching_prev_opts = {
+      foldmethod = vim.wo.foldmethod,
+      foldexpr = vim.wo.foldexpr,
+      foldlevel = vim.wo.foldlevel,
+      foldcolumn = vim.wo.foldcolumn,
+    }
+    vim.w.preview_search_matching = true
+    return ':setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>'
+  end
+end, { expr = true })
