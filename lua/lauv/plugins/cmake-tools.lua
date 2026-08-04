@@ -6,7 +6,8 @@ return {
     local loaded = false
     local function check()
       local cwd = vim.uv.cwd()
-      if vim.fn.filereadable(cwd .. '/CMakeLists.txt') == 1 then
+      local stat = vim.uv.fs_stat(vim.fs.joinpath(cwd, 'CMakeLists.txt'))
+      if stat and stat.type == 'file' then
         require('lazy').load({ plugins = { 'cmake-tools.nvim' } })
         loaded = true
       end

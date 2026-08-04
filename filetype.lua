@@ -15,10 +15,11 @@ vim.filetype.add({
       if path ~= vim.fs.normalize(vim.api.nvim_buf_get_name(bufnr)) then
         return
       end
-      local size = vim.fn.getfsize(path)
-      if size <= 0 then
+      local stat = vim.uv.fs_stat(path)
+      if not stat or stat.type == 'directory' or stat.size <= 0 then
         return
       end
+      local size = stat.size
       if size > vim.g.bigfile_size_threshold then
         return 'bigfile'
       end

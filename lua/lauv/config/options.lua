@@ -38,7 +38,7 @@ end
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = augroup('highlight_yank'),
   callback = function()
-    if vim.fn.has('nvim-0.13') == 1 then
+    if vim.version.cmp(vim.version(), { 0, 13, 0 }) >= 0 then
       vim.hl.hl_op()
     else
       (vim.hl or vim.highlight).on_yank()
@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd({ 'VimResized' }, {
   group = augroup('resize_splits'),
   callback = function()
-    local current_tab = vim.fn.tabpagenr()
+    local current_tab = vim.api.nvim_tabpage_get_number(0)
     vim.cmd('tabdo wincmd =')
     vim.cmd('tabnext ' .. current_tab)
   end,
@@ -82,7 +82,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
       return
     end
     local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
+    vim.fn.mkdir(vim.fs.dirname(vim.fs.abspath(file)), 'p')
   end,
 })
 

@@ -33,7 +33,7 @@ end
 
 local function single_file_command()
   local ft = vim.bo.filetype
-  local file_path = vim.fn.expand('%:p')
+  local file_path = vim.api.nvim_buf_get_name(0)
 
   if ft == 'python' then
     return ('uv run %s'):format(file_path)

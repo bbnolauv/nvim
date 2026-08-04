@@ -37,7 +37,7 @@ local custom_theme = {
 }
 
 local function hide_in_width()
-  return vim.fn.winwidth(0) > 100
+  return vim.api.nvim_win_get_width(0) > 100
 end
 
 return {

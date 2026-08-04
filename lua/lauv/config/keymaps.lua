@@ -1,7 +1,7 @@
 -- use space as the leader key
 vim.g.mapleader = ' '
 
-if vim.fn.has('nvim-0.11') == 1 then
+if vim.version.cmp(vim.version(), { 0, 11, 0 }) >= 0 then
   vim.keymap.del('n', 'gri')
   vim.keymap.del({ 'n', 'x' }, 'gra')
   vim.keymap.del('n', 'grn')
@@ -99,14 +99,16 @@ vim.keymap.set('x', 'K', ":m '<-2<CR>gv=gv", { silent = true })
 
 vim.keymap.set('n', '<Leader><C-g>', function()
   local msg = {}
-  local isfile = vim.fn.empty(vim.fn.expand('%:p')) == 0
+  local file = vim.api.nvim_buf_get_name(0)
+  local isfile = file ~= ''
   -- Show file info
   local oldmsg = vim.trim(vim.fn.execute('norm! 2' .. vim.keycode('<C-g>')))
-  local mtime = isfile and vim.fn.strftime('%Y-%m-%d %H:%M', vim.fn.getftime(vim.fn.expand('%:p')))
-    or ''
+  local stat = isfile and vim.uv.fs_stat(file)
+  local mtime = stat and os.date('%Y-%m-%d %H:%M', stat.mtime.sec) or ''
   table.insert(msg, { ('%s  %s\n'):format(oldmsg:sub(1), mtime) })
   -- Show git branch
-  local gitref = vim.fn.exists('*FugitiveHead') == 1 and vim.fn['FugitiveHead'](7) or nil
+  local ok, gitref = pcall(vim.fn['FugitiveHead'], 7)
+  gitref = ok and gitref or nil
   if gitref then
     table.insert(msg, { ('branch: %s\n'):format(gitref) })
   end
@@ -119,10 +121,11 @@ vim.keymap.set('n', '<Leader><C-g>', function()
     ),
   })
   -- Show process id
-  table.insert(msg, { ('PID: %s\n'):format(vim.fn.getpid()) })
+  table.insert(msg, { ('PID: %s\n'):format(vim.uv.os_getpid()) })
   -- Show current context
+  local lnum = vim.fn.search('\\v^[[:alpha:]$_]', 'bn', 1, 100)
   table.insert(msg, {
-    vim.fn.getline(vim.fn.search('\\v^[[:alpha:]$_]', 'bn', 1, 100)),
+    lnum > 0 and vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or '',
     'Identifier',
   })
   vim.api.nvim_echo(msg, false, {})
@@ -133,7 +136,9 @@ vim.keymap.set('n', 'g??', function()
   vim.ui.open(('https://google.com/search?q=%s'):format(vim.fn.expand('<cword>')))
 end)
 vim.keymap.set('x', 'g??', function()
-  local region = vim.fn.getregion(vim.fn.getpos('.'), vim.fn.getpos('v'), { type = vim.fn.mode() })
+  local region = vim.fn.getregion(vim.fn.getpos('.'), vim.fn.getpos('v'), {
+    type = vim.api.nvim_get_mode().mode,
+  })
   vim.ui.open(('https://google.com/search?q=%s'):format(vim.trim(table.concat(region, ' '))))
   vim.api.nvim_input('<esc>')
 end)
