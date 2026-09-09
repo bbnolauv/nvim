@@ -1,9 +1,15 @@
 return {
   'folke/flash.nvim',
-  ---@type Flash.Config|{}
+  ---@type Flash.Config
   opts = {
     -- catppuccin fixes flash.nvim's weird highlight
     -- highlight = { groups = { label = 'MatchParen' } },
+    -- Leave `f`, `F`, `t`, `T`, `;` and `,` to Neovim: the builtin motions
+    -- feed `plugin/repeat.lua`, which repeats them with `;` and `,`.
+    modes = {
+      ---@diagnostic disable-next-line: missing-fields
+      char = { enabled = false },
+    },
   },
   -- stylua: ignore
   keys = {
