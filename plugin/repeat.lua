@@ -16,6 +16,8 @@ local opposite_pair = {
   [']}'] = '[{',
   ['[('] = '])',
   ['])'] = '[(',
+  gt = 'gT',
+  gT = 'gt',
 }
 
 -- Plain direction flip: "]c" -> "[c", "]q" -> "[q", "f," -> "F,".
