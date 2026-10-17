@@ -70,35 +70,32 @@ local lazygit_term = nil
 
 function M.lazygit()
   if vim.fn.executable('lazygit') ~= 1 then
-    vim.notify('lazygit not found. Please install it first.', vim.log.levels.ERROR)
-    return
+    return vim.notify('lazygit not found. Please install it first.', vim.log.levels.ERROR)
   end
+
   if not lazygit_term then
-    local path = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-    if not vim.uv.fs_stat(path) then
-      vim.print(path)
-      path = path:sub(7) -- for Oil buffer path oil://
-      vim.print(path)
-      if not vim.uv.fs_stat(path) then
-        return vim.notify('Not a valid path', vim.log.levels.ERROR, { title = 'lazygit' })
-      end
+    local root_dir = vim.fs.root(0, '.git')
+    if not root_dir then
+      return vim.notify(
+        "This buffer doesn't belong to a Git repository.",
+        vim.log.levels.ERROR,
+        { title = 'lazygit' }
+      )
     end
     local Terminal = require('toggleterm.terminal').Terminal
     lazygit_term = Terminal:new({
       cmd = 'lazygit',
-      dir = path,
+      dir = root_dir,
       direction = 'float',
       close_on_exit = true,
-      float_opts = {
-        height = math.floor(vim.o.lines * 0.9),
-      },
+      float_opts = { height = math.floor(vim.o.lines * 0.9) },
       on_exit = function()
         lazygit_term = nil
       end,
       on_open = function(term)
         vim.keymap.set('t', '<c-h>', function()
           term:toggle()
-        end, { buffer = term.bufnr, silent = true })
+        end, { buffer = term.bufnr, silent = true, desc = 'hide lazygit panel' })
       end,
     })
   end
