@@ -54,6 +54,7 @@ vim.keymap.set(
 )
 
 vim.keymap.set({ 'n', 'v' }, '<F1>', '<cmd>b#<CR>', { desc = ':h alternate-file' })
+vim.keymap.set('n', 'gK', '<cmd>h!<cr>')
 
 -- :h CTRL-L (nohlsearch/diffupdate)
 vim.keymap.set(
