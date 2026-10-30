@@ -17,9 +17,10 @@ vim.wo.foldmethod = 'manual'
 vim.wo.statuscolumn = ''
 vim.wo.conceallevel = 0
 
-vim.b.completion = false
-vim.b.minianimate_disable = true
-vim.b.minihipatterns_disable = true
+-- vim.o.eventignore = 'all'
+-- vim.o.ruler = true
+vim.wo.relativenumber = false
+vim.wo.number = false
 
 -- Restore the underlying filetype's syntax (e.g. JSON for minified files),
 -- since the buffer's filetype is now 'bigfile'.
